@@ -1,0 +1,27 @@
+services:
+  # Marp Agent MCP Server
+  marp-agent:
+    build: .
+    ports:
+      - "8000:8000"
+
+  # MCP Inspector (開発用)
+  inspector:
+    image: public.ecr.aws/docker/library/node:24.14.0-trixie-slim
+    working_dir: /app
+    command: >
+      sh -c "npm install -g @modelcontextprotocol/inspector &&
+             npx @modelcontextprotocol/inspector
+             --transport http
+             --server-url http://marp-agent:8000/mcp"
+    ports:
+      - "6274:6274"  # Inspector UI
+      - "6277:6277"  # Inspector proxy
+    environment:
+      - HOST=0.0.0.0
+      - CLIENT_PORT=6274
+      - SERVER_PORT=6277
+      - DANGEROUSLY_OMIT_AUTH=true
+      - ALLOWED_ORIGINS=http://127.0.0.1:6274,http://localhost:6274,http://127.0.0.1:6277,http://localhost:6277
+    depends_on:
+      - marp-agent

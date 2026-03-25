@@ -1,0 +1,38 @@
+# Python
+**/.venv
+**/__pycache__
+**/*.pyc
+**/*.pyo
+
+# Linter/Formatter caches
+**/.ruff_cache
+**/.mypy_cache
+
+# Node.js
+**/node_modules
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+**/*.swp
+
+# Documentation
+*.md
+!client/README.md
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Skills (SKILL.mdのみコンテナに含める)
+skills/
+!skills/marp-agent-mcp/SKILL.md
+
+# Misc
+.env
+.env.*

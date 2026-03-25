@@ -1,0 +1,181 @@
+/* @theme gradient */
+/* Author: rnd195 https://github.com/rnd195/ */
+/* MIT license https://github.com/rnd195/my-marp-themes/blob/live/licenses/LICENSE */
+
+@import "default";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+:root {
+  font-family: Inter, Helvetica, Arial;
+}
+
+section {
+  background-color: #ffffff;
+  background-image: linear-gradient(to top right, #e1c2e1 5%, #b9d5d9 95%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #842174;
+}
+
+a {
+  color: #9d30a6;
+}
+
+code {
+  background-color: #ffffffad;
+}
+
+mark {
+  background-color: #eaa2ee;
+  padding: 0 2px 2px;
+}
+
+pre {
+  background-color: #ffffffad;
+}
+
+/* https://github.com/yhatt/marp/issues/263 */
+section::after {
+  font-size: 0.75em;
+  content: attr(data-marpit-pagination) " / " attr(data-marpit-pagination-total);
+}
+
+/* the "center" keyword centers the image - may break, careful */
+/* https://github.com/marp-team/marpit/issues/141#issuecomment-473204518 */
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+
+/* || SECTION CLASS: blue */
+section.blue {
+  background-color: #ffffff;
+  background-image: linear-gradient(to bottom right, #cadaf7 5%, #87a7e4 95%);
+}
+
+section.blue>h1,
+section.blue>h2,
+section.blue>h3,
+section.blue>h4,
+section.blue>h5,
+section.blue>h6 {
+  color: #214484;
+}
+
+section.blue>a {
+  color: #303ca6;
+}
+
+section.blue::after,
+section.blue>footer,
+section.blue>header {
+  color: #303ca6;
+}
+
+/* || SECTION CLASS: top */
+/* title slide - same style as lead */
+section.top {
+  background-color: #ffffff;
+  background-image: linear-gradient(to bottom right, #cadaf7 5%, #87a7e4 95%);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+section.top h1 {
+  color: #214484;
+  text-align: center;
+}
+
+section.top h2,
+section.top h3,
+section.top h4,
+section.top h5,
+section.top h6 {
+  color: #214484;
+  text-align: center;
+  font-weight: normal;
+}
+
+section.top p {
+  text-align: center;
+}
+
+section.top::after {
+  display: none;
+}
+
+/* || SECTION CLASS: lead */
+/* section divider / title slide - blue gradient with centered text */
+section.lead {
+  background-color: #ffffff;
+  background-image: linear-gradient(to bottom right, #cadaf7 5%, #87a7e4 95%);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+section.lead h1 {
+  color: #214484;
+  text-align: center;
+}
+
+section.lead h2,
+section.lead h3,
+section.lead h4,
+section.lead h5,
+section.lead h6 {
+  color: #214484;
+  text-align: center;
+  font-weight: normal;
+}
+
+section.lead p {
+  text-align: center;
+}
+
+/* || SECTION CLASS: tinytext */
+/* new class that makes p, ul, and blockquote text smaller */
+/* might be useful for the References slide, use <!-- _class: tinytext --> */
+section.tinytext>p,
+section.tinytext>ul,
+section.tinytext>blockquote {
+  font-size: 0.65em;
+}
+
+/* || SECTION CLASS: end */
+/* back cover - same style as lead, hide page number */
+section.end {
+  background-color: #ffffff;
+  background-image: linear-gradient(to bottom right, #cadaf7 5%, #87a7e4 95%);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+section.end h1,
+section.end h2,
+section.end h3,
+section.end h4,
+section.end h5,
+section.end h6 {
+  color: #214484;
+  text-align: center;
+}
+
+section.end p {
+  text-align: center;
+}
+
+section.end::after {
+  display: none;
+}
