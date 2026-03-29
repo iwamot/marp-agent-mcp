@@ -178,7 +178,7 @@ function updateDownloadAvailability() {
 
 function resetDownloadButton() {
   downloadBtn.textContent = "Download";
-  updateDownloadAvailability();
+  downloadBtn.disabled = !canDownloadFile;
 }
 
 // 現在のスライドを表示（1ページずつ）
@@ -221,10 +221,6 @@ function renderSlides() {
     totalPages = slides.length;
     updatePageInfo();
     showCurrentSlide();
-
-    // themeSelect、ダウンロードボタンを有効化
-    themeSelect.disabled = false;
-    updateDownloadAvailability();
   } catch (error) {
     console.error("Render failed:", error);
     showToast("レンダリングに失敗しました");
@@ -318,15 +314,14 @@ async function handleMarkdownDownload() {
   resetDownloadButton();
 }
 
-// エクスポートボタンの共通ハンドラ
+// サーバーエクスポートの共通ハンドラ
 async function handleServerExport(
-  btn: HTMLButtonElement,
   toolName: string,
   args: Record<string, unknown>,
 ) {
   if (!currentMarkdown) return;
-  btn.disabled = true;
-  btn.textContent = "wait...";
+  downloadBtn.disabled = true;
+  downloadBtn.textContent = "wait...";
   try {
     const result = await app.callServerTool({
       name: toolName,
@@ -387,11 +382,11 @@ lastBtn.addEventListener("click", () => {
 downloadBtn.addEventListener("click", async () => {
   const format = downloadFormat.value;
   if (format === "pdf") {
-    handleServerExport(downloadBtn, "export_pdf", {});
+    handleServerExport("export_pdf", {});
   } else if (format === "pptx") {
-    handleServerExport(downloadBtn, "export_pptx", {});
+    handleServerExport("export_pptx", {});
   } else if (format === "pptx-editable") {
-    handleServerExport(downloadBtn, "export_pptx", { editable: true });
+    handleServerExport("export_pptx", { editable: true });
   } else if (format === "md") {
     await handleMarkdownDownload();
   }
@@ -413,6 +408,10 @@ app.ontoolresult = (result) => {
           themeSelect.value = currentTheme;
         }
         renderSlides();
+
+        // コントロールを有効化
+        themeSelect.disabled = false;
+        updateDownloadAvailability();
       }
     } catch {
       // パースエラーは無視
