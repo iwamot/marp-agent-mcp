@@ -9,7 +9,7 @@ Claude Desktop AppとClaude.aiで動作確認済み。
 - 自然言語によるスライド生成（スキルも併用）
 - インタラクティブなプレビュー
 - 3つのテーマ (`speee`, `border`, `gradient`)
-- 4つのダウンロード形式（Markdown、PDF、PPTX、編集可能なPPTX）
+- 4つのダウンロード形式（PDF、PPTX、編集可能なPPTX、Markdown）
 
 ### 使用例
 
