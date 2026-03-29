@@ -19,8 +19,6 @@
     --color-background-tertiary: #2d2d2d;
     --color-text-primary: #e0e0e0;
     --color-text-secondary: #999999;
-    --color-text-danger: #e74c3c;
-    --color-text-success: #27ae60;
     --color-border-primary: #444444;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
@@ -96,10 +94,6 @@ body {
   }
 }
 
-.toolbar button.download-btn:disabled {
-  opacity: 0.5;
-}
-
 @media (prefers-color-scheme: dark) {
   .toolbar button.download-btn {
     background: #5c7599;
@@ -125,7 +119,7 @@ body {
 /* シングルスライド表示 */
 #previewContainer svg {
   display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
   box-shadow: var(--shadow-sm);
 }
