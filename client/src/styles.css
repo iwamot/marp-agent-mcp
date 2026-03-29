@@ -89,11 +89,12 @@ body {
 }
 
 @media (hover: hover) {
-  .toolbar button:hover {
+  .toolbar button:hover:not(:disabled) {
     background: var(--color-background-tertiary);
   }
 }
 
+.toolbar select:disabled,
 .toolbar button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -106,7 +107,7 @@ body {
 }
 
 @media (hover: hover) {
-  .toolbar button.download-btn:hover {
+  .toolbar button.download-btn:hover:not(:disabled) {
     background: var(--app-accent-hover);
   }
 }

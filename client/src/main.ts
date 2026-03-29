@@ -223,6 +223,10 @@ function renderSlides() {
     totalPages = slides.length;
     updatePageInfo();
     showCurrentSlide();
+
+    // themeSelectとダウンロードボタンを有効化
+    themeSelect.disabled = false;
+    updateDownloadButtonsAvailability();
   } catch (error) {
     console.error("Render failed:", error);
     showToast("レンダリングに失敗しました");
@@ -453,9 +457,6 @@ async function main() {
   const caps = app.getHostCapabilities();
   canCallServerTools = !!caps?.serverTools;
   canDownloadFile = !!caps?.downloadFile;
-
-  // ダウンロードボタンの有効/無効を設定
-  updateDownloadButtonsAvailability();
 }
 
 main();
