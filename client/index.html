@@ -7,7 +7,26 @@
   <title>Marp Slide Preview</title>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="toolbar">
+      <select id="themeSelect"></select>
+      <span class="separator">|</span>
+      <button id="firstBtn" disabled>&lt;&lt;</button>
+      <button id="prevBtn" disabled>&lt;</button>
+      <button id="nextBtn" disabled>&gt;</button>
+      <button id="lastBtn" disabled>&gt;&gt;</button>
+      <div class="download-group">
+        <button id="downloadMd" class="download-btn">MD</button>
+        <button id="downloadPdf" class="download-btn">PDF</button>
+        <button id="downloadPptx" class="download-btn">PPTX</button>
+        <button id="downloadPptxEditable" class="download-btn">Editable PPTX</button>
+      </div>
+    </div>
+    <div id="previewContainer">
+      <style id="slideStyle"></style>
+      <div class="marpit"></div>
+    </div>
+  </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
