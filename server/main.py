@@ -14,11 +14,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import PlainTextResponse, Response
 from starlette.routing import Route
 
-from tools.export import (
-    generate_editable_pptx,
-    generate_pdf,
-    generate_pptx,
-)
+from tools.export import generate_editable_pptx, generate_pdf, generate_pptx
 from tools.validate_slide import check_slide_overflow
 
 # ロギング設定
@@ -236,7 +232,7 @@ async def export_pptx(markdown: str, theme: Theme | None = None, editable: bool 
     return {
         "pptx_base64": base64.b64encode(pptx_bytes).decode("utf-8"),
         "filename": "slide.pptx",
-        "mime_type": ("application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+        "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     }
 
 
