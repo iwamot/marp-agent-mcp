@@ -53,8 +53,8 @@ const firstBtn = document.getElementById("firstBtn") as HTMLButtonElement;
 const prevBtn = document.getElementById("prevBtn") as HTMLButtonElement;
 const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
 const lastBtn = document.getElementById("lastBtn") as HTMLButtonElement;
-const exportFormat = document.getElementById(
-  "exportFormat",
+const downloadFormat = document.getElementById(
+  "downloadFormat",
 ) as HTMLSelectElement;
 const downloadBtn = document.getElementById("downloadBtn") as HTMLButtonElement;
 const previewContainer = document.getElementById(
@@ -159,24 +159,24 @@ function updateDownloadAvailability() {
   const unavailableMessage = "この環境ではダウンロードできません";
 
   // downloadFile があればセレクト＋ボタンを有効化
-  exportFormat.disabled = !canDownloadFile;
+  downloadFormat.disabled = !canDownloadFile;
   downloadBtn.disabled = !canDownloadFile;
   downloadBtn.title = canDownloadFile ? "" : unavailableMessage;
 
   // serverTools がなければ PDF/PPTX オプションを無効化
-  for (const option of exportFormat.options) {
+  for (const option of downloadFormat.options) {
     if (option.value !== "md") {
       option.disabled = !canCallServerTools;
     }
   }
 
   // 現在の選択が無効になった場合は Markdown に切り替え
-  if (!canCallServerTools && exportFormat.value !== "md") {
-    exportFormat.value = "md";
+  if (!canCallServerTools && downloadFormat.value !== "md") {
+    downloadFormat.value = "md";
   }
 }
 
-function resetExportButton() {
+function resetDownloadButton() {
   downloadBtn.textContent = "Download";
   updateDownloadAvailability();
 }
@@ -222,7 +222,7 @@ function renderSlides() {
     updatePageInfo();
     showCurrentSlide();
 
-    // themeSelect、Exportボタンを有効化
+    // themeSelect、ダウンロードボタンを有効化
     themeSelect.disabled = false;
     updateDownloadAvailability();
   } catch (error) {
@@ -254,13 +254,13 @@ async function triggerDownload(
     showToast("ダウンロードに失敗しました");
   }
 
-  resetExportButton();
+  resetDownloadButton();
 }
 
 async function handleToolResult(result: CallToolResult) {
   const content = result.content;
   if (!content || content.length === 0) {
-    resetExportButton();
+    resetDownloadButton();
     return;
   }
 
@@ -273,15 +273,15 @@ async function handleToolResult(result: CallToolResult) {
       } else if (data.pptx_base64) {
         await triggerDownload(data.pptx_base64, data.filename, data.mime_type);
       } else {
-        resetExportButton();
+        resetDownloadButton();
       }
     } catch (e) {
       console.error("handleToolResult failed:", e);
       showToast("ダウンロードに失敗しました");
-      resetExportButton();
+      resetDownloadButton();
     }
   } else {
-    resetExportButton();
+    resetDownloadButton();
   }
 }
 
@@ -315,11 +315,11 @@ async function handleMarkdownDownload() {
     console.error("Markdown download failed:", e);
     showToast("ダウンロードに失敗しました");
   }
-  resetExportButton();
+  resetDownloadButton();
 }
 
 // エクスポートボタンの共通ハンドラ
-async function handleExport(
+async function handleServerExport(
   btn: HTMLButtonElement,
   toolName: string,
   args: Record<string, unknown>,
@@ -336,11 +336,11 @@ async function handleExport(
       handleToolResult(result);
     } else {
       showError(result);
-      resetExportButton();
+      resetDownloadButton();
     }
   } catch (e) {
     console.error(`${toolName} failed:`, e);
-    resetExportButton();
+    resetDownloadButton();
   }
 }
 
@@ -385,13 +385,13 @@ lastBtn.addEventListener("click", () => {
 });
 
 downloadBtn.addEventListener("click", async () => {
-  const format = exportFormat.value;
+  const format = downloadFormat.value;
   if (format === "pdf") {
-    handleExport(downloadBtn, "export_pdf", {});
+    handleServerExport(downloadBtn, "export_pdf", {});
   } else if (format === "pptx") {
-    handleExport(downloadBtn, "export_pptx", {});
+    handleServerExport(downloadBtn, "export_pptx", {});
   } else if (format === "pptx-editable") {
-    handleExport(downloadBtn, "export_pptx", { editable: true });
+    handleServerExport(downloadBtn, "export_pptx", { editable: true });
   } else if (format === "md") {
     await handleMarkdownDownload();
   }
@@ -439,7 +439,7 @@ app.onhostcontextchanged = (ctx) => {
 };
 
 app.ontoolcancelled = () => {
-  resetExportButton();
+  resetDownloadButton();
 };
 
 // 初期化
