@@ -1,26 +1,38 @@
-/* フォールバック値（ホストから変数が提供されない場合） */
 :root {
+  /*
+   * ホストから提供される可能性がある変数（フォールバック値）
+   * applyHostStyleVariables() で上書きされる場合がある
+   */
   --color-background-primary: #ffffff;
-  --color-background-secondary: #f5f5f5;
   --color-background-tertiary: #e8e8e8;
   --color-text-primary: #333333;
   --color-text-secondary: #666666;
-  --color-text-danger: #e74c3c;
-  --color-text-success: #27ae60;
   --color-border-primary: #cccccc;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
-  --border-radius-sm: 4px;
+
+  /* アプリ独自の変数（ホストからは提供されない） */
+  --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --app-border-radius: 4px;
+  --app-accent: #3498db;
+  --app-accent-hover: #2980b9;
+  --app-text-on-accent: #ffffff;
+  --app-toast-background: #e74c3c;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* ホスト変数のダークモードフォールバック */
     --color-background-primary: #1a1a1a;
-    --color-background-secondary: #242424;
     --color-background-tertiary: #2d2d2d;
     --color-text-primary: #e0e0e0;
     --color-text-secondary: #999999;
     --color-border-primary: #444444;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+    /* アプリ独自変数のダークモード値 */
+    --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --app-accent: #5c7599;
+    --app-accent-hover: #6b8caa;
+    --app-text-on-accent: #f5f5f5;
+    --app-toast-background: #c0392b;
   }
 }
 
@@ -40,8 +52,8 @@ body {
     Roboto,
     sans-serif
   );
-  background: var(--color-background-secondary);
   color: var(--color-text-primary);
+  overflow: hidden;
 }
 
 .toolbar {
@@ -50,7 +62,6 @@ body {
   align-items: center;
   flex-wrap: wrap;
   padding: 12px 16px 4px 16px;
-  background: var(--color-background-secondary);
 }
 
 .separator {
@@ -62,13 +73,19 @@ body {
 .toolbar select,
 .toolbar button {
   padding: 6px 12px;
-  border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-border-primary);
+  border-radius: var(--app-border-radius);
   background: var(--color-background-primary);
   color: var(--color-text-primary);
   font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.toolbar select:focus,
+.toolbar button:focus {
+  outline: 1px solid var(--color-border-primary);
+  outline-offset: -1px;
 }
 
 @media (hover: hover) {
@@ -83,26 +100,14 @@ body {
 }
 
 .toolbar button.download-btn {
-  background: #3498db;
-  color: #ffffff;
+  background: var(--app-accent);
+  color: var(--app-text-on-accent);
   border: none;
 }
 
 @media (hover: hover) {
   .toolbar button.download-btn:hover {
-    background: #2980b9;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .toolbar button.download-btn {
-    background: #5c7599;
-  }
-
-  @media (hover: hover) {
-    .toolbar button.download-btn:hover {
-      background: #6b8caa;
-    }
+    background: var(--app-accent-hover);
   }
 }
 
@@ -121,7 +126,7 @@ body {
   display: block;
   width: 100%;
   height: auto;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--app-shadow-sm);
 }
 
 /* トースト通知 */
@@ -129,11 +134,11 @@ body {
   position: fixed;
   top: 12px;
   right: 16px;
-  background: var(--color-text-danger);
-  color: #ffffff;
+  background: var(--app-toast-background);
+  color: var(--app-text-on-accent);
   padding: 12px 24px;
-  border-radius: var(--border-radius-sm);
-  box-shadow: var(--shadow-sm);
+  border-radius: 4px;
+  box-shadow: var(--app-shadow-sm);
   z-index: 1000;
   animation: toast-fade-in 0.3s ease;
 }

@@ -1,6 +1,11 @@
 import Marp from "@marp-team/marp-core";
 import { observe } from "@marp-team/marpit-svg-polyfill";
-import { App } from "@modelcontextprotocol/ext-apps";
+import {
+  App,
+  applyDocumentTheme,
+  applyHostFonts,
+  applyHostStyleVariables,
+} from "@modelcontextprotocol/ext-apps";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import "./styles.css";
 
@@ -407,6 +412,15 @@ app.ontoolresult = (result) => {
 };
 
 app.onhostcontextchanged = (ctx) => {
+  if (ctx.theme) {
+    applyDocumentTheme(ctx.theme);
+  }
+  if (ctx.styles?.variables) {
+    applyHostStyleVariables(ctx.styles.variables);
+  }
+  if (ctx.styles?.css?.fonts) {
+    applyHostFonts(ctx.styles.css.fonts);
+  }
   if (ctx.safeAreaInsets) {
     document.body.style.paddingTop = `${ctx.safeAreaInsets.top}px`;
     document.body.style.paddingRight = `${ctx.safeAreaInsets.right}px`;
@@ -422,6 +436,18 @@ app.ontoolcancelled = () => {
 // 初期化
 async function main() {
   await app.connect();
+
+  // 初期スタイルを適用
+  const hostContext = app.getHostContext();
+  if (hostContext?.theme) {
+    applyDocumentTheme(hostContext.theme);
+  }
+  if (hostContext?.styles?.variables) {
+    applyHostStyleVariables(hostContext.styles.variables);
+  }
+  if (hostContext?.styles?.css?.fonts) {
+    applyHostFonts(hostContext.styles.css.fonts);
+  }
 
   // Host capabilities をチェック
   const caps = app.getHostCapabilities();
