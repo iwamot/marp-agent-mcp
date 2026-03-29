@@ -53,14 +53,10 @@ const firstBtn = document.getElementById("firstBtn") as HTMLButtonElement;
 const prevBtn = document.getElementById("prevBtn") as HTMLButtonElement;
 const nextBtn = document.getElementById("nextBtn") as HTMLButtonElement;
 const lastBtn = document.getElementById("lastBtn") as HTMLButtonElement;
-const downloadMd = document.getElementById("downloadMd") as HTMLButtonElement;
-const downloadPdf = document.getElementById("downloadPdf") as HTMLButtonElement;
-const downloadPptx = document.getElementById(
-  "downloadPptx",
-) as HTMLButtonElement;
-const downloadPptxEditable = document.getElementById(
-  "downloadPptxEditable",
-) as HTMLButtonElement;
+const exportFormat = document.getElementById(
+  "exportFormat",
+) as HTMLSelectElement;
+const downloadBtn = document.getElementById("downloadBtn") as HTMLButtonElement;
 const previewContainer = document.getElementById(
   "previewContainer",
 ) as HTMLElement;
@@ -159,28 +155,30 @@ function updatePageInfo() {
   lastBtn.disabled = isLast;
 }
 
-function updateDownloadButtonsAvailability() {
-  // MD: downloadFile のみ必要（クライアント側で完結）
-  // PDF/PPTX: serverTools と downloadFile の両方が必要
-  const canDownloadExport = canCallServerTools && canDownloadFile;
+function updateDownloadAvailability() {
   const unavailableMessage = "この環境ではダウンロードできません";
 
-  downloadMd.disabled = !canDownloadFile;
-  downloadMd.title = canDownloadFile ? "" : unavailableMessage;
-  downloadPdf.disabled = !canDownloadExport;
-  downloadPdf.title = canDownloadExport ? "" : unavailableMessage;
-  downloadPptx.disabled = !canDownloadExport;
-  downloadPptx.title = canDownloadExport ? "" : unavailableMessage;
-  downloadPptxEditable.disabled = !canDownloadExport;
-  downloadPptxEditable.title = canDownloadExport ? "" : unavailableMessage;
+  // downloadFile があればセレクト＋ボタンを有効化
+  exportFormat.disabled = !canDownloadFile;
+  downloadBtn.disabled = !canDownloadFile;
+  downloadBtn.title = canDownloadFile ? "" : unavailableMessage;
+
+  // serverTools がなければ PDF/PPTX オプションを無効化
+  for (const option of exportFormat.options) {
+    if (option.value !== "md") {
+      option.disabled = !canCallServerTools;
+    }
+  }
+
+  // 現在の選択が無効になった場合は Markdown に切り替え
+  if (!canCallServerTools && exportFormat.value !== "md") {
+    exportFormat.value = "md";
+  }
 }
 
-function resetDownloadButtons() {
-  downloadMd.textContent = "MD";
-  downloadPdf.textContent = "PDF";
-  downloadPptx.textContent = "PPTX";
-  downloadPptxEditable.textContent = "Editable PPTX";
-  updateDownloadButtonsAvailability();
+function resetExportButton() {
+  downloadBtn.textContent = "Download";
+  updateDownloadAvailability();
 }
 
 // 現在のスライドを表示（1ページずつ）
@@ -224,9 +222,9 @@ function renderSlides() {
     updatePageInfo();
     showCurrentSlide();
 
-    // themeSelectとダウンロードボタンを有効化
+    // themeSelect、Exportボタンを有効化
     themeSelect.disabled = false;
-    updateDownloadButtonsAvailability();
+    updateDownloadAvailability();
   } catch (error) {
     console.error("Render failed:", error);
     showToast("レンダリングに失敗しました");
@@ -256,13 +254,13 @@ async function triggerDownload(
     showToast("ダウンロードに失敗しました");
   }
 
-  resetDownloadButtons();
+  resetExportButton();
 }
 
 async function handleToolResult(result: CallToolResult) {
   const content = result.content;
   if (!content || content.length === 0) {
-    resetDownloadButtons();
+    resetExportButton();
     return;
   }
 
@@ -275,16 +273,49 @@ async function handleToolResult(result: CallToolResult) {
       } else if (data.pptx_base64) {
         await triggerDownload(data.pptx_base64, data.filename, data.mime_type);
       } else {
-        resetDownloadButtons();
+        resetExportButton();
       }
     } catch (e) {
       console.error("handleToolResult failed:", e);
       showToast("ダウンロードに失敗しました");
-      resetDownloadButtons();
+      resetExportButton();
     }
   } else {
-    resetDownloadButtons();
+    resetExportButton();
   }
+}
+
+// Markdownダウンロード
+async function handleMarkdownDownload() {
+  if (!currentMarkdown) return;
+  downloadBtn.disabled = true;
+  downloadBtn.textContent = "wait...";
+  try {
+    const markdownWithTheme = injectTheme(currentMarkdown, currentTheme);
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(markdownWithTheme);
+    let binary = "";
+    for (const byte of bytes) {
+      binary += String.fromCharCode(byte);
+    }
+    const base64Data = btoa(binary);
+    await app.downloadFile({
+      contents: [
+        {
+          type: "resource",
+          resource: {
+            uri: "file:///slide.md",
+            mimeType: "text/markdown",
+            blob: base64Data,
+          },
+        },
+      ],
+    });
+  } catch (e) {
+    console.error("Markdown download failed:", e);
+    showToast("ダウンロードに失敗しました");
+  }
+  resetExportButton();
 }
 
 // エクスポートボタンの共通ハンドラ
@@ -305,44 +336,15 @@ async function handleExport(
       handleToolResult(result);
     } else {
       showError(result);
-      resetDownloadButtons();
+      resetExportButton();
     }
   } catch (e) {
     console.error(`${toolName} failed:`, e);
-    resetDownloadButtons();
+    resetExportButton();
   }
 }
 
 // イベントリスナー
-downloadMd.addEventListener("click", async () => {
-  if (!currentMarkdown) return;
-  downloadMd.disabled = true;
-  downloadMd.textContent = "wait...";
-  try {
-    // 選択中のテーマを反映したマークダウン
-    const markdownWithTheme = injectTheme(currentMarkdown, currentTheme);
-    // UTF-8対応のBase64エンコード
-    const bytes = new TextEncoder().encode(markdownWithTheme);
-    const base64 = btoa(String.fromCharCode(...bytes));
-    await app.downloadFile({
-      contents: [
-        {
-          type: "resource",
-          resource: {
-            uri: "file:///slide.md",
-            mimeType: "text/markdown",
-            blob: base64,
-          },
-        },
-      ],
-    });
-  } catch (e) {
-    console.error("MD download failed:", e);
-    showToast("ダウンロードに失敗しました");
-  }
-  resetDownloadButtons();
-});
-
 themeSelect.addEventListener("change", () => {
   currentTheme = themeSelect.value as ThemeId;
   if (currentMarkdown) {
@@ -382,15 +384,18 @@ lastBtn.addEventListener("click", () => {
   }
 });
 
-downloadPdf.addEventListener("click", () =>
-  handleExport(downloadPdf, "export_pdf", {}),
-);
-downloadPptx.addEventListener("click", () =>
-  handleExport(downloadPptx, "export_pptx", {}),
-);
-downloadPptxEditable.addEventListener("click", () =>
-  handleExport(downloadPptxEditable, "export_pptx", { editable: true }),
-);
+downloadBtn.addEventListener("click", async () => {
+  const format = exportFormat.value;
+  if (format === "pdf") {
+    handleExport(downloadBtn, "export_pdf", {});
+  } else if (format === "pptx") {
+    handleExport(downloadBtn, "export_pptx", {});
+  } else if (format === "pptx-editable") {
+    handleExport(downloadBtn, "export_pptx", { editable: true });
+  } else if (format === "md") {
+    await handleMarkdownDownload();
+  }
+});
 
 // MCP Appハンドラ
 app.ontoolresult = (result) => {
@@ -434,7 +439,7 @@ app.onhostcontextchanged = (ctx) => {
 };
 
 app.ontoolcancelled = () => {
-  resetDownloadButtons();
+  resetExportButton();
 };
 
 // 初期化

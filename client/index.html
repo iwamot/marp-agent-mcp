@@ -9,17 +9,27 @@
 <body>
   <div id="app">
     <div class="toolbar">
-      <select id="themeSelect" disabled></select>
-      <span class="separator">|</span>
-      <button id="firstBtn" disabled>&lt;&lt;</button>
-      <button id="prevBtn" disabled>&lt;</button>
-      <button id="nextBtn" disabled>&gt;</button>
-      <button id="lastBtn" disabled>&gt;&gt;</button>
-      <div class="download-group">
-        <button id="downloadMd" class="download-btn" disabled>MD</button>
-        <button id="downloadPdf" class="download-btn" disabled>PDF</button>
-        <button id="downloadPptx" class="download-btn" disabled>PPTX</button>
-        <button id="downloadPptxEditable" class="download-btn" disabled>Editable PPTX</button>
+      <div class="toolbar-row">
+        <div class="toolbar-group">
+          <select id="themeSelect" disabled></select>
+        </div>
+        <div class="toolbar-group">
+          <button id="firstBtn" disabled>&lt;&lt;</button>
+          <button id="prevBtn" disabled>&lt;</button>
+          <button id="nextBtn" disabled>&gt;</button>
+          <button id="lastBtn" disabled>&gt;&gt;</button>
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <div class="toolbar-group">
+          <select id="exportFormat" disabled>
+            <option value="pdf">PDF</option>
+            <option value="pptx">PPTX</option>
+            <option value="pptx-editable">Editable PPTX</option>
+            <option value="md">Markdown</option>
+          </select>
+          <button id="downloadBtn" disabled>Download</button>
+        </div>
       </div>
     </div>
     <div id="previewContainer">
