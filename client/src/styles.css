@@ -12,8 +12,6 @@
   /* アプリ独自の変数（ホストからは提供されない） */
   --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
   --app-border-radius: 4px;
-  --app-accent: #3498db;
-  --app-accent-hover: #2980b9;
   --app-text-on-accent: #ffffff;
   --app-toast-background: #e74c3c;
 }
@@ -29,8 +27,6 @@
 
     /* アプリ独自変数のダークモード値 */
     --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-    --app-accent: #5c7599;
-    --app-accent-hover: #6b8caa;
     --app-text-on-accent: #f5f5f5;
     --app-toast-background: #c0392b;
   }
@@ -58,16 +54,24 @@ body {
 
 .toolbar {
   display: flex;
-  gap: 8px;
+  gap: 8px 16px;
   align-items: center;
   flex-wrap: wrap;
   padding: 12px 16px 4px 16px;
 }
 
-.separator {
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  margin: 0 4px;
+.toolbar-row {
+  display: flex;
+  gap: 8px 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .toolbar select,
@@ -98,24 +102,6 @@ body {
 .toolbar button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.toolbar button.download-btn {
-  background: var(--app-accent);
-  color: var(--app-text-on-accent);
-  border: none;
-}
-
-@media (hover: hover) {
-  .toolbar button.download-btn:hover:not(:disabled) {
-    background: var(--app-accent-hover);
-  }
-}
-
-.download-group {
-  display: flex;
-  gap: 8px;
-  align-items: center;
 }
 
 #previewContainer {
