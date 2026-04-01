@@ -127,7 +127,8 @@
         "ghcr.io/astral-sh/uv",
         "astral-sh/uv"
       ],
-      "groupName": "uv"
+      "groupName": "uv",
+      "pinDigests": false
     },
     {
       "description": "Automerge minor, patch, and digest updates",
