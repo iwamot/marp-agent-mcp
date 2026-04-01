@@ -27,17 +27,10 @@ RUN npm install -g @marp-team/marp-cli@4.3.1
 # ============================================
 FROM public.ecr.aws/docker/library/python:3.14.3-slim-trixie AS python-builder
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-ENV DEBIAN_FRONTEND=noninteractive
-
 WORKDIR /app
 
-# uvをインストール
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
-    && curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && rm -rf /var/lib/apt/lists/*
-ENV PATH="/root/.local/bin:$PATH"
+# uvをコピー
+COPY --from=ghcr.io/astral-sh/uv:0.10.12 /uv /usr/local/bin/uv
 
 # Python依存関係をインストール
 COPY server/pyproject.toml server/uv.lock ./

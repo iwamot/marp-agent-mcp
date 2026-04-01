@@ -9,14 +9,10 @@ Marpを使ったスライド生成MCPサーバー。Claude Desktop App / Claude.
 ## 開発コマンド
 
 ```bash
-# 開発環境（Docker）
-docker compose up -d --build      # 起動（ビルド含む）
-docker compose logs -f marp-agent # ログ確認
-docker compose down               # 停止
+# MCPサーバー起動（Docker）
+docker build -t marp-agent-mcp .
+docker run -p 8000:8000 marp-agent-mcp
 ```
-
-- marp-agent: MCPサーバー (port 8000)
-- inspector: MCP Inspector (http://127.0.0.1:6274) — ツールの動作確認・デバッグ用
 
 ```bash
 # バリデーション（コミット前に必須）
