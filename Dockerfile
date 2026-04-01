@@ -25,7 +25,7 @@ RUN npm install -g @marp-team/marp-cli@4.3.1
 # ============================================
 # Stage 3: Python依存関係ビルド
 # ============================================
-FROM public.ecr.aws/docker/library/python:3.14.3-slim-trixie AS python-builder
+FROM public.ecr.aws/docker/library/python:3.14.3-slim-trixie@sha256:fb83750094b46fd6b8adaa80f66e2302ecbe45d513f6cece637a841e1025b4ca AS python-builder
 
 WORKDIR /app
 
@@ -39,7 +39,7 @@ RUN uv sync --no-dev
 # ============================================
 # Stage 4: サーバー（最終イメージ）
 # ============================================
-FROM public.ecr.aws/docker/library/python:3.14.3-slim-trixie
+FROM public.ecr.aws/docker/library/python:3.14.3-slim-trixie@sha256:fb83750094b46fd6b8adaa80f66e2302ecbe45d513f6cece637a841e1025b4ca
 
 # Pythonの出力をバッファリングしない（ログ即時出力）
 ENV PYTHONUNBUFFERED=1
