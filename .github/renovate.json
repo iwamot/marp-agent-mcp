@@ -107,9 +107,12 @@
       "pinDigests": false
     },
     {
-      "description": "Group mise tool updates (ruff, ty)",
+      "description": "Group mise tool updates (except uv)",
       "matchManagers": [
         "mise"
+      ],
+      "matchPackageNames": [
+        "!uv"
       ],
       "groupName": "mise-tools"
     },
