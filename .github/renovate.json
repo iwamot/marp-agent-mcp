@@ -125,7 +125,7 @@
       ],
       "matchPackageNames": [
         "ghcr.io/astral-sh/uv",
-        "uv"
+        "astral-sh/uv"
       ],
       "groupName": "uv"
     },
