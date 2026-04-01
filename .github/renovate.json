@@ -112,7 +112,7 @@
         "mise"
       ],
       "matchPackageNames": [
-        "/^(?!uv$)/"
+        "!/^uv$/"
       ],
       "groupName": "mise-tools"
     },
