@@ -3,35 +3,61 @@
   "extends": [
     "config:best-practices"
   ],
-  "ignoreDeps": [
-    "node",
-    "python"
+  "labels": [
+    "dependencies"
+  ],
+  "rebaseWhen": "conflicted",
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "minimumReleaseAge": "3 days",
+  "packageRules": [
+    {
+      "description": "Group mise tools updates",
+      "matchManagers": [
+        "mise"
+      ],
+      "groupName": "mise-tools"
+    },
+    {
+      "description": "Group npm dependencies",
+      "matchManagers": [
+        "npm"
+      ],
+      "groupName": "npm-dependencies"
+    },
+    {
+      "description": "Group Python dependencies",
+      "matchManagers": [
+        "pep621"
+      ],
+      "groupName": "python-dependencies"
+    },
+    {
+      "description": "Group Dockerfile updates",
+      "matchManagers": [
+        "dockerfile",
+        "custom.regex"
+      ],
+      "groupName": "dockerfile"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github-actions"
+    },
+    {
+      "description": "Automerge minor, patch, and digest updates",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "automerge": true
+    }
   ],
   "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^\\.mise\\.toml$/"
-      ],
-      "matchStrings": [
-        "node\\s*=\\s*\"(?<currentValue>[^\"]+)\""
-      ],
-      "depNameTemplate": "public.ecr.aws/docker/library/node",
-      "datasourceTemplate": "docker",
-      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^\\.mise\\.toml$/"
-      ],
-      "matchStrings": [
-        "python\\s*=\\s*\"(?<currentValue>[^\"]+)\""
-      ],
-      "depNameTemplate": "public.ecr.aws/docker/library/python",
-      "datasourceTemplate": "docker",
-      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)"
-    },
     {
       "customType": "regex",
       "managerFilePatterns": [
@@ -42,101 +68,6 @@
       ],
       "depNameTemplate": "@marp-team/marp-cli",
       "datasourceTemplate": "npm"
-    }
-  ],
-  "labels": [
-    "dependencies"
-  ],
-  "rebaseWhen": "conflicted",
-  "prHourlyLimit": 0,
-  "prConcurrentLimit": 0,
-  "minimumReleaseAge": "3 days",
-  "packageRules": [
-    {
-      "description": "Group GitHub Actions updates",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "groupName": "github-actions"
-    },
-    {
-      "description": "Group Node.js runtime version updates",
-      "matchManagers": [
-        "dockerfile",
-        "custom.regex"
-      ],
-      "matchPackageNames": [
-        "public.ecr.aws/docker/library/node"
-      ],
-      "groupName": "node"
-    },
-    {
-      "description": "Group Python runtime version updates",
-      "matchManagers": [
-        "dockerfile",
-        "custom.regex"
-      ],
-      "matchPackageNames": [
-        "public.ecr.aws/docker/library/python"
-      ],
-      "groupName": "python"
-    },
-    {
-      "description": "Group Python dependencies",
-      "matchManagers": [
-        "pep621"
-      ],
-      "groupName": "python-dependencies"
-    },
-    {
-      "description": "Group npm dependencies",
-      "matchManagers": [
-        "npm"
-      ],
-      "groupName": "npm-dependencies"
-    },
-    {
-      "description": "Disable Docker digest pinning for .mise.toml versions",
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "matchPackageNames": [
-        "public.ecr.aws/docker/library/node",
-        "public.ecr.aws/docker/library/python"
-      ],
-      "pinDigests": false
-    },
-    {
-      "description": "Group mise tool updates (except uv)",
-      "matchManagers": [
-        "mise"
-      ],
-      "matchPackageNames": [
-        "!/^uv$/",
-        "!/^astral-sh\\/uv$/"
-      ],
-      "groupName": "mise-tools"
-    },
-    {
-      "description": "Group uv updates (Dockerfile and mise)",
-      "matchManagers": [
-        "dockerfile",
-        "mise"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/astral-sh/uv",
-        "astral-sh/uv"
-      ],
-      "groupName": "uv"
-    },
-    {
-      "description": "Automerge minor, patch, and digest updates",
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "digest"
-      ],
-      "automerge": true
     }
   ]
 }
