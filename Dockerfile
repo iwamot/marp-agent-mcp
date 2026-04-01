@@ -30,7 +30,7 @@ FROM public.ecr.aws/docker/library/python:3.14.3-slim-trixie AS python-builder
 WORKDIR /app
 
 # uvをコピー
-COPY --from=ghcr.io/astral-sh/uv:0.10.12 /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.11.2 /uv /usr/local/bin/uv
 
 # Python依存関係をインストール
 COPY server/pyproject.toml server/uv.lock ./
