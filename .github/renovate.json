@@ -10,6 +10,9 @@
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "minimumReleaseAge": "3 days",
+  "lockFileMaintenance": {
+    "commitMessageExtra": "({{groupName}})"
+  },
   "packageRules": [
     {
       "description": "Group mise tools updates",
