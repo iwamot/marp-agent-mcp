@@ -112,7 +112,8 @@
         "mise"
       ],
       "matchPackageNames": [
-        "!/^uv$/"
+        "!/^uv$/",
+        "!/^astral-sh\\/uv$/"
       ],
       "groupName": "mise-tools"
     },
