@@ -1,0 +1,2 @@
+ignored:
+  - DL3008  # apt-get version pinning - Debian packages are frequently updated and old versions removed
