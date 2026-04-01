@@ -5,7 +5,7 @@
 # ============================================
 # Stage 1: クライアントUIビルド
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim AS client-builder
+FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8 AS client-builder
 
 WORKDIR /client
 COPY client/package*.json ./
@@ -18,7 +18,7 @@ RUN npm run build
 # ============================================
 # Stage 2: Marp CLIビルド
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim AS marp-builder
+FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8 AS marp-builder
 
 RUN npm install -g @marp-team/marp-cli@4.3.1
 
