@@ -8,12 +8,13 @@
 FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8 AS client-builder
 
 WORKDIR /client
-COPY client/package*.json ./
-RUN npm install
+RUN corepack enable && corepack use pnpm
+COPY client/package.json client/pnpm-lock.yaml client/pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY client/ ./
 # テーマCSSをコピー（Viteビルド前に必要）
 COPY themes/ ./src/themes/
-RUN npm run build
+RUN pnpm run build
 
 # ============================================
 # Stage 2: Marp CLIビルド

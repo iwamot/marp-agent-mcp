@@ -1,6 +1,7 @@
 {
   "name": "marp-agent-mcp-client",
   "private": true,
+  "packageManager": "pnpm@10.33.0",
   "type": "module",
   "scripts": {
     "build": "vite build",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.10",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "typescript": "6.0.2",
     "vite": "8.0.3",
     "vite-plugin-singlefile": "2.3.2"
