@@ -20,7 +20,9 @@ cd ..
 # Client (TypeScript)
 cd client
 npm ci
+npx biome migrate --write
 if [[ -n "$CI" ]]; then
+  git diff --exit-code biome.json
   npm run lint
 else
   npm run lint -- --fix

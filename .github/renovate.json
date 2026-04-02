@@ -40,6 +40,20 @@
   ],
   "packageRules": [
     {
+      "description": "Run biome migrate after biome update",
+      "matchPackageNames": [
+        "@biomejs/biome"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "cd client && npx biome migrate --write"
+        ],
+        "fileFilters": [
+          "client/biome.json"
+        ]
+      }
+    },
+    {
       "description": "Group mise tools updates",
       "matchManagers": [
         "mise"

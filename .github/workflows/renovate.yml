@@ -51,3 +51,4 @@ jobs:
         env:
           LOG_LEVEL: ${{ inputs.log-level || 'info' }}
           RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: '["^cd client && npx biome migrate --write$"]'
