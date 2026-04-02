@@ -10,6 +10,7 @@ from anyio import to_thread
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.exceptions import ToolError
 from mcp.types import ToolAnnotations
+from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import PlainTextResponse, Response
 from starlette.routing import Route
@@ -31,6 +32,42 @@ class Theme(StrEnum):
     speee = "speee"
     border = "border"
     gradient = "gradient"
+
+
+# ツールの戻り値モデル
+class PreviewResult(BaseModel):
+    """プレビューツールの戻り値"""
+
+    markdown: str
+    theme: str
+
+
+class ValidationError(BaseModel):
+    """バリデーションエラーの詳細"""
+
+    type: str
+    slide_number: int
+    line_count: int | None = None
+    max_lines: int | None = None
+    excess: int | None = None
+    max_width: int | None = None
+    limit: int | None = None
+
+
+class ValidationResult(BaseModel):
+    """バリデーションツールの戻り値"""
+
+    valid: bool
+    errors: list[ValidationError]
+    message: str | None = None
+
+
+class ExportResult(BaseModel):
+    """エクスポートツールの戻り値"""
+
+    data_base64: str
+    filename: str
+    mime_type: str
 
 
 # MCPサーバーの作成
@@ -92,8 +129,9 @@ def preview_resource() -> str:
     meta={
         "ui": {"resourceUri": VIEW_URI},
     },
+    structured_output=True,
 )
-def preview_slide(markdown: str, theme: Theme | None = None) -> dict:
+def preview_slide(markdown: str, theme: Theme | None = None) -> PreviewResult:
     """スライドをプレビュー表示します。
 
     Marpマークダウンを解析し、プレビューUIに表示します。
@@ -111,10 +149,10 @@ def preview_slide(markdown: str, theme: Theme | None = None) -> dict:
         theme = Theme.speee
     # クライアント側でmarp-coreを使ってレンダリングするため、
     # サーバーはマークダウンのみを返す
-    return {
-        "markdown": markdown,
-        "theme": theme.value,
-    }
+    return PreviewResult(
+        markdown=markdown,
+        theme=theme.value,
+    )
 
 
 @mcp.tool(
@@ -124,8 +162,9 @@ def preview_slide(markdown: str, theme: Theme | None = None) -> dict:
         idempotentHint=True,
         openWorldHint=False,
     ),
+    structured_output=True,
 )
-def validate_slide(markdown: str) -> dict:
+def validate_slide(markdown: str) -> ValidationResult:
     """スライドのオーバーフローをチェックします。
 
     Marpマークダウンを解析し、各スライドの行数・テーブル幅が制限内かを検証します。
@@ -141,10 +180,11 @@ def validate_slide(markdown: str) -> dict:
     violations = check_slide_overflow(markdown)
 
     if not violations:
-        return {"valid": True, "errors": []}
+        return ValidationResult(valid=True, errors=[])
 
     # エラーメッセージを構築
     error_messages = []
+    errors = []
     for v in violations:
         slide_num = v["slide_number"]
         if v["type"] == "line_overflow":
@@ -154,18 +194,35 @@ def validate_slide(markdown: str) -> dict:
             error_messages.append(
                 f"スライド{slide_num}: 実質{line_count}行（上限{max_lines}行、{excess}行超過）"
             )
+            errors.append(
+                ValidationError(
+                    type="line_overflow",
+                    slide_number=slide_num,
+                    line_count=line_count,
+                    max_lines=max_lines,
+                    excess=excess,
+                )
+            )
         elif v["type"] == "table_overflow":
             max_width = v["max_width"]
             limit = v["limit"]
             error_messages.append(
                 f"スライド{slide_num}: 表の横幅超過（{max_width}文字、上限{limit}文字）"
             )
+            errors.append(
+                ValidationError(
+                    type="table_overflow",
+                    slide_number=slide_num,
+                    max_width=max_width,
+                    limit=limit,
+                )
+            )
 
-    return {
-        "valid": False,
-        "errors": violations,
-        "message": "オーバーフローを検出しました。修正してください。\n" + "\n".join(error_messages),
-    }
+    return ValidationResult(
+        valid=False,
+        errors=errors,
+        message="オーバーフローを検出しました。修正してください。\n" + "\n".join(error_messages),
+    )
 
 
 @mcp.tool(
@@ -175,8 +232,9 @@ def validate_slide(markdown: str) -> dict:
         idempotentHint=True,
         openWorldHint=False,
     ),
+    structured_output=True,
 )
-async def export_pdf(markdown: str, theme: Theme | None = None) -> dict:
+async def export_pdf(markdown: str, theme: Theme | None = None) -> ExportResult:
     """スライドをPDF形式でエクスポートします。
 
     Args:
@@ -193,11 +251,11 @@ async def export_pdf(markdown: str, theme: Theme | None = None) -> dict:
     except Exception as e:
         logger.exception("PDF generation failed")
         raise ToolError(f"PDF生成に失敗しました: {e}") from e
-    return {
-        "pdf_base64": base64.b64encode(pdf_bytes).decode("utf-8"),
-        "filename": "slide.pdf",
-        "mime_type": "application/pdf",
-    }
+    return ExportResult(
+        data_base64=base64.b64encode(pdf_bytes).decode("utf-8"),
+        filename="slide.pdf",
+        mime_type="application/pdf",
+    )
 
 
 @mcp.tool(
@@ -207,8 +265,11 @@ async def export_pdf(markdown: str, theme: Theme | None = None) -> dict:
         idempotentHint=True,
         openWorldHint=False,
     ),
+    structured_output=True,
 )
-async def export_pptx(markdown: str, theme: Theme | None = None, editable: bool = False) -> dict:
+async def export_pptx(
+    markdown: str, theme: Theme | None = None, editable: bool = False
+) -> ExportResult:
     """スライドをPPTX形式でエクスポートします。
 
     Args:
@@ -229,11 +290,11 @@ async def export_pptx(markdown: str, theme: Theme | None = None, editable: bool 
     except Exception as e:
         logger.exception("PPTX generation failed")
         raise ToolError(f"PPTX生成に失敗しました: {e}") from e
-    return {
-        "pptx_base64": base64.b64encode(pptx_bytes).decode("utf-8"),
-        "filename": "slide.pptx",
-        "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    }
+    return ExportResult(
+        data_base64=base64.b64encode(pptx_bytes).decode("utf-8"),
+        filename="slide.pptx",
+        mime_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    )
 
 
 SKILL_ZIP_PATH = Path(__file__).parent / "skill.zip"

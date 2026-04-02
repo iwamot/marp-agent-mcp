@@ -253,29 +253,17 @@ async function triggerDownload(
   resetDownloadButton();
 }
 
-async function handleToolResult(result: CallToolResult) {
-  const content = result.content;
-  if (!content || content.length === 0) {
-    resetDownloadButton();
-    return;
-  }
+// structuredContent の型定義
+interface ExportResultData {
+  data_base64: string;
+  filename: string;
+  mime_type: string;
+}
 
-  const textContent = content.find((c: { type: string }) => c.type === "text");
-  if (textContent && textContent.type === "text") {
-    try {
-      const data = JSON.parse(textContent.text);
-      if (data.pdf_base64) {
-        await triggerDownload(data.pdf_base64, data.filename, data.mime_type);
-      } else if (data.pptx_base64) {
-        await triggerDownload(data.pptx_base64, data.filename, data.mime_type);
-      } else {
-        resetDownloadButton();
-      }
-    } catch (e) {
-      console.error("handleToolResult failed:", e);
-      showToast("ダウンロードに失敗しました");
-      resetDownloadButton();
-    }
+async function handleToolResult(result: CallToolResult) {
+  const data = result.structuredContent as ExportResultData | undefined;
+  if (data?.data_base64) {
+    await triggerDownload(data.data_base64, data.filename, data.mime_type);
   } else {
     resetDownloadButton();
   }
@@ -392,30 +380,26 @@ downloadBtn.addEventListener("click", async () => {
   }
 });
 
+// structuredContent の型定義（プレビュー用）
+interface PreviewResultData {
+  markdown: string;
+  theme: string;
+}
+
 // MCP Appハンドラ
 app.ontoolresult = (result) => {
-  const content = result.content;
-  if (!content || content.length === 0) return;
-
-  const textContent = content.find((c) => c.type === "text");
-  if (textContent && textContent.type === "text") {
-    try {
-      const data = JSON.parse(textContent.text);
-      if (data.markdown) {
-        currentMarkdown = data.markdown;
-        if (data.theme) {
-          currentTheme = data.theme;
-          themeSelect.value = currentTheme;
-        }
-        renderSlides();
-
-        // コントロールを有効化
-        themeSelect.disabled = false;
-        updateDownloadAvailability();
-      }
-    } catch {
-      // パースエラーは無視
+  const data = result.structuredContent as PreviewResultData | undefined;
+  if (data?.markdown) {
+    currentMarkdown = data.markdown;
+    if (data.theme) {
+      currentTheme = data.theme as ThemeId;
+      themeSelect.value = currentTheme;
     }
+    renderSlides();
+
+    // コントロールを有効化
+    themeSelect.disabled = false;
+    updateDownloadAvailability();
   }
 };
 
@@ -440,6 +424,8 @@ app.onhostcontextchanged = (ctx) => {
 app.ontoolcancelled = () => {
   resetDownloadButton();
 };
+
+app.onerror = console.error;
 
 // 初期化
 async function main() {
