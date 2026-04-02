@@ -10,6 +10,34 @@
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "minimumReleaseAge": "3 days",
+  "constraints": {
+    "uv": "0.11.2"
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/Dockerfile$/"
+      ],
+      "matchStrings": [
+        "npm install -g @marp-team/marp-cli@(?<currentValue>[^\\s]+)"
+      ],
+      "depNameTemplate": "@marp-team/marp-cli",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/renovate\\.json$/"
+      ],
+      "matchStrings": [
+        "\"constraints\":\\s*\\{[^}]*\"uv\":\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "astral-sh/uv",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    }
+  ],
   "packageRules": [
     {
       "description": "Group mise tools updates",
@@ -35,8 +63,17 @@
     {
       "description": "Group Dockerfile updates",
       "matchManagers": [
-        "dockerfile",
+        "dockerfile"
+      ],
+      "groupName": "dockerfile"
+    },
+    {
+      "description": "Group marp-cli with Dockerfile",
+      "matchManagers": [
         "custom.regex"
+      ],
+      "matchPackageNames": [
+        "@marp-team/marp-cli"
       ],
       "groupName": "dockerfile"
     },
@@ -55,19 +92,6 @@
         "digest"
       ],
       "automerge": true
-    }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/Dockerfile$/"
-      ],
-      "matchStrings": [
-        "npm install -g @marp-team/marp-cli@(?<currentValue>[^\\s]+)"
-      ],
-      "depNameTemplate": "@marp-team/marp-cli",
-      "datasourceTemplate": "npm"
     }
   ]
 }
