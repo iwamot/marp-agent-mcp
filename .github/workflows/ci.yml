@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Run Linting and Type Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Takumi Guard for PyPI
+        uses: flatt-security/setup-takumi-guard-pypi@7d825811bb293b9e0230477165442580a0074280 # v1.0.0
+
+      - name: Setup Takumi Guard for npm
+        uses: flatt-security/setup-takumi-guard-npm@8f53b50568e4466f2d92504f349c05b9ffcb8b59 # v1
+
+      - name: Setup mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+
+      - name: Run validation script
+        run: bash validate.sh
