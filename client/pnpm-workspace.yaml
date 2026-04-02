@@ -1,0 +1,5 @@
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+strictDepBuilds: true
+blockExoticSubdeps: true
+trustPolicy: no-downgrade

@@ -19,16 +19,16 @@ cd ..
 
 # Client (TypeScript)
 cd client
-npm ci
-npx biome migrate --write
+pnpm install --frozen-lockfile
+pnpm exec biome migrate --write
 if [[ -n "$CI" ]]; then
   git diff --exit-code biome.json
-  npm run lint
+  pnpm run lint
 else
-  npm run lint -- --fix
-  npm run format
+  pnpm run lint --fix
+  pnpm run format
 fi
-npm run typecheck
+pnpm run typecheck
 cd ..
 
 # Dockerfile

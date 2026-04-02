@@ -46,7 +46,7 @@
       ],
       "postUpgradeTasks": {
         "commands": [
-          "cd client && npx biome migrate --write"
+          "cd client && pnpm exec biome migrate --write"
         ],
         "fileFilters": [
           "client/biome.json"
