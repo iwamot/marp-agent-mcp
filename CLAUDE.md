@@ -47,6 +47,10 @@ docker run -p 8000:8000 marp-agent-mcp
 
 ツールバージョンは `.mise.toml` で管理。`mise install` で一括セットアップ。
 
+## コミットルール
+
+- コミットには必ず `-s` フラグを付けること（`git commit -s`）。DCO（Developer Certificate of Origin）が必須。
+
 ## 設計メモ
 
 - `client/vite.config.ts` の `legacy.inconsistentCjsInterop: true` は、Vite 8 + marp-core の組み合わせで必要。marp-coreがCJS/ESM両対応になれば不要になる見込み（参考: https://github.com/marp-team/marp-core/pull/415）
