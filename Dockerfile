@@ -20,6 +20,7 @@ RUN npm run build
 # ============================================
 FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8 AS marp-builder
 
+COPY client/.npmrc /root/.npmrc
 RUN npm install -g @marp-team/marp-cli@4.3.1
 
 # ============================================
