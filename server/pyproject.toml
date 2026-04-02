@@ -8,6 +8,10 @@ dependencies = [
     "starlette>=0.52.1",
 ]
 
+[[tool.uv.index]]
+url = "https://pypi.flatt.tech/simple/"
+default = true
+
 [tool.ruff]
 target-version = "py314"
 line-length = 100
