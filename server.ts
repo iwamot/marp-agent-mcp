@@ -127,7 +127,34 @@ export function estimateVisualLines(text: string): number {
 }
 
 export function parseSlides(markdown: string): string[] {
-  const content = markdown.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, "");
+  // Remove YAML frontmatter (starts with --- and ends with ---)
+  // Using indexOf to avoid ReDoS vulnerability with regex
+  let content = markdown;
+  if (content.startsWith("---")) {
+    const firstNewline = content.indexOf("\n");
+    if (firstNewline !== -1) {
+      const closingIndex = content.indexOf("\n---", firstNewline);
+      if (closingIndex !== -1) {
+        // Find the end of the closing --- line
+        let endIndex = closingIndex + 4; // "\n---".length
+        while (endIndex < content.length && content[endIndex] !== "\n") {
+          // Skip whitespace after ---
+          if (content[endIndex] !== " " && content[endIndex] !== "\t") {
+            break;
+          }
+          endIndex++;
+        }
+        if (
+          endIndex === content.length ||
+          content[endIndex] === "\n" ||
+          content[endIndex] === " " ||
+          content[endIndex] === "\t"
+        ) {
+          content = content.slice(endIndex + 1);
+        }
+      }
+    }
+  }
   const slides = content.split(/\n---\s*\n/);
   return slides.map((s) => s.trim()).filter((s) => s.length > 0);
 }
@@ -144,7 +171,13 @@ export function countContentLines(slideContent: string): number {
       continue;
     }
     if (!stripped) continue;
-    if (/^<!--.*-->$/.test(stripped)) continue;
+    // Check for single-line HTML comment (stripped is always a single line)
+    if (
+      stripped.startsWith("<!--") &&
+      stripped.endsWith("-->") &&
+      !stripped.slice(4, -3).includes("-->")
+    )
+      continue;
     if (/^\|[\s\-:|]+\|$/.test(stripped)) continue;
     count += estimateVisualLines(stripped);
   }
