@@ -1,13 +1,13 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
-  "vcs": {
-    "enabled": false,
-    "clientKind": "git",
-    "useIgnoreFile": false
-  },
   "files": {
-    "ignoreUnknown": false,
-    "includes": ["src/**", "*.ts"]
+    "includes": [
+      "main.ts",
+      "server.test.ts",
+      "server.ts",
+      "src/**",
+      "vite.config.ts"
+    ]
   },
   "formatter": {
     "enabled": true,

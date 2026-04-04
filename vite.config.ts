@@ -1,13 +1,22 @@
 import { defineConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
+const INPUT = process.env.INPUT;
+if (!INPUT) {
+  throw new Error("INPUT environment variable is not set");
+}
+
+const isDevelopment = process.env.NODE_ENV === "development";
+
 export default defineConfig({
   plugins: [viteSingleFile()],
   build: {
-    outDir: "dist",
-    emptyOutDir: true,
-    target: "es2022",
+    sourcemap: isDevelopment ? "inline" : undefined,
+    cssMinify: !isDevelopment,
+    minify: !isDevelopment,
+
     rollupOptions: {
+      input: INPUT,
       external: ["@marp-team/marp-core", "@marp-team/marpit-svg-polyfill"],
       output: {
         paths: {
@@ -17,5 +26,7 @@ export default defineConfig({
         },
       },
     },
+    outDir: "dist",
+    emptyOutDir: false,
   },
 });

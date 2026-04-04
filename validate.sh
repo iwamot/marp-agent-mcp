@@ -4,21 +4,7 @@ set -e
 eval "$(mise activate bash)"
 mise install
 
-# Server (Python)
-cd server
-uv sync
-if [[ -n "$CI" ]]; then
-  ruff check
-  ruff format --check
-else
-  ruff check --fix
-  ruff format
-fi
-ty check
-cd ..
-
-# Client (TypeScript)
-cd client
+# TypeScript (Biome lint/format + tsc type check + tests)
 pnpm install --frozen-lockfile
 pnpm exec biome migrate --write
 if [[ -n "$CI" ]]; then
@@ -29,7 +15,7 @@ else
   pnpm run format
 fi
 pnpm run typecheck
-cd ..
+pnpm run test
 
 # Dockerfile
 hadolint Dockerfile

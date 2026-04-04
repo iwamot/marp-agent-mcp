@@ -1,24 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices"
-  ],
-  "labels": [
-    "dependencies"
-  ],
+  "extends": ["config:best-practices"],
+  "labels": ["dependencies"],
   "rebaseWhen": "conflicted",
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "minimumReleaseAge": "3 days",
-  "constraints": {
-    "uv": "0.11.2"
-  },
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/Dockerfile$/"
-      ],
+      "managerFilePatterns": ["/Dockerfile$/"],
       "matchStrings": [
         "npm install -g @marp-team/marp-cli@(?<currentValue>[^\\s]+)"
       ],
@@ -27,84 +18,52 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^\\.github/renovate\\.json$/"
-      ],
+      "managerFilePatterns": ["/Dockerfile$/"],
       "matchStrings": [
-        "\"constraints\":\\s*\\{[^}]*\"uv\":\\s*\"(?<currentValue>[^\"]+)\""
+        "npm install -g bun@(?<currentValue>[^\\s]+)"
       ],
-      "depNameTemplate": "astral-sh/uv",
-      "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v?(?<version>.+)$"
+      "depNameTemplate": "bun",
+      "datasourceTemplate": "npm"
     }
   ],
   "packageRules": [
     {
       "description": "Run biome migrate after biome update",
-      "matchPackageNames": [
-        "@biomejs/biome"
-      ],
+      "matchPackageNames": ["@biomejs/biome"],
       "postUpgradeTasks": {
-        "commands": [
-          "cd client && pnpm exec biome migrate --write"
-        ],
-        "fileFilters": [
-          "client/biome.json"
-        ]
+        "commands": ["pnpm exec biome migrate --write"],
+        "fileFilters": ["biome.json"]
       }
     },
     {
       "description": "Group mise tools updates",
-      "matchManagers": [
-        "mise"
-      ],
+      "matchManagers": ["mise"],
       "groupName": "mise-tools"
     },
     {
       "description": "Group npm dependencies",
-      "matchManagers": [
-        "npm"
-      ],
+      "matchManagers": ["npm"],
       "groupName": "npm-dependencies"
     },
     {
-      "description": "Group Python dependencies",
-      "matchManagers": [
-        "pep621"
-      ],
-      "groupName": "python-dependencies"
-    },
-    {
       "description": "Group Dockerfile updates",
-      "matchManagers": [
-        "dockerfile"
-      ],
+      "matchManagers": ["dockerfile"],
       "groupName": "dockerfile"
     },
     {
-      "description": "Group marp-cli with Dockerfile",
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "matchPackageNames": [
-        "@marp-team/marp-cli"
-      ],
+      "description": "Group marp-cli and bun with Dockerfile",
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": ["@marp-team/marp-cli", "bun"],
       "groupName": "dockerfile"
     },
     {
       "description": "Group GitHub Actions updates",
-      "matchManagers": [
-        "github-actions"
-      ],
+      "matchManagers": ["github-actions"],
       "groupName": "github-actions"
     },
     {
       "description": "Automerge minor, patch, and digest updates",
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "digest"
-      ],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true
     }
   ]

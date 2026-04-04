@@ -32,11 +32,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup Takumi Guard for PyPI
-        uses: flatt-security/setup-takumi-guard-pypi@7d825811bb293b9e0230477165442580a0074280 # v1.0.0
-        with:
-          bot-id: BT01KN64BM5NBFHJNSSDYQWKE279
-
       - name: Setup Takumi Guard for npm
         uses: flatt-security/setup-takumi-guard-npm@8f53b50568e4466f2d92504f349c05b9ffcb8b59 # v1
         with:
@@ -64,4 +59,4 @@ jobs:
         env:
           LOG_LEVEL: ${{ inputs.log-level || 'info' }}
           RENOVATE_REPOSITORIES: ${{ github.repository }}
-          RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: '["^cd client && pnpm exec biome migrate --write$"]'
+          RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: '["^pnpm exec biome migrate --write$"]'

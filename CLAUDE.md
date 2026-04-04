@@ -11,7 +11,7 @@ Marpを使ったスライド生成MCPサーバー。Claude Desktop App / Claude.
 ```bash
 # MCPサーバー起動（Docker）
 docker build -t marp-agent-mcp .
-docker run -p 8000:8000 marp-agent-mcp
+docker run -p 3001:3001 marp-agent-mcp
 ```
 
 ```bash
@@ -19,27 +19,28 @@ docker run -p 8000:8000 marp-agent-mcp
 ./validate.sh
 ```
 
-コードを変更したら、コミットやPR作成前に必ず `./validate.sh` を実行すること。サーバー（Ruff lint/format + ty型チェック）とクライアント（Biome lint/format + tsc型チェック）を一括実行する。
+コードを変更したら、コミットやPR作成前に必ず `./validate.sh` を実行すること。Biome lint/format + tsc 型チェックを一括実行する。
 
 ## アーキテクチャ
 
 ```
-┌───────────────────┐   MCP (Streamable HTTP)   ┌──────────────────┐
-│ Claude Desktop App │◄────────────────────────►│   server/main.py │
-│ / Claude.ai        │                           │   (FastMCP)      │
-└─────────┬─────────┘                           └────────┬─────────┘
+┌───────────────────┐   MCP (Streamable HTTP)   ┌──────────────────────┐
+│ Claude Desktop App │◄────────────────────────►│     server.ts        │
+│ / Claude.ai        │                           │     (MCP SDK)        │
+└─────────┬─────────┘                           └──────────┬───────────┘
          │                                                  │
          │  MCP App UI (iframe)                            │ subprocess
          ▼                                                  ▼
-┌─────────────────┐                               ┌──────────────────┐
-│  client/main.ts │                               │    Marp CLI      │
-│  (marp-core で   │                               │  (PDF/PPTX生成)  │
-│   レンダリング)   │                               └──────────────────┘
-└─────────────────┘
+┌─────────────────────┐                           ┌──────────────────┐
+│   src/mcp-app.ts    │                           │    Marp CLI      │
+│   (marp-core で      │                           │  (PDF/PPTX生成)  │
+│    レンダリング)      │                           └──────────────────┘
+└─────────────────────┘
 ```
 
-- **server/**: Python MCPサーバー（FastMCP）。PDF/PPTX生成はMarp CLIをサブプロセスで実行
-- **client/**: MCP App UI。marp-coreでブラウザ内レンダリング。Viteでシングルファイルにビルドし `server/ui/index.html` に出力。marp-core/marpit-svg-polyfillはesm.shからCDN読み込み（バンドルサイズ削減）
+- **server.ts**: TypeScript MCPサーバー（MCP SDK）。PDF/PPTX生成はMarp CLIをサブプロセスで実行
+- **main.ts**: エントリーポイント。Streamable HTTP / stdio トランスポートの起動
+- **src/mcp-app.ts**: MCP App UI。marp-coreでブラウザ内レンダリング。Viteでシングルファイルにビルドし `dist/mcp-app.html` に出力。marp-core/marpit-svg-polyfillはesm.shからCDN読み込み（バンドルサイズ削減）
 - **themes/**: スライドテーマCSS。サーバー側はファイル読み込みでMarp CLIに渡し、クライアント側はViteの `?raw` インポートで埋め込み
 - **skills/**: LLM向けスライド生成ガイダンス（SKILL.md）
 
@@ -53,5 +54,5 @@ docker run -p 8000:8000 marp-agent-mcp
 
 ## 設計メモ
 
-- `client/vite.config.ts` の `legacy.inconsistentCjsInterop: true` は、Vite 8 + marp-core の組み合わせで必要。marp-coreがCJS/ESM両対応になれば不要になる見込み（参考: https://github.com/marp-team/marp-core/pull/415）
 - Dockerイメージには Chromium（PDF生成）、日本語フォント（fonts-noto-cjk）、LibreOffice Impress（編集可能PPTX）が含まれる
+- スライドのオーバーフロー検証ロジック（`server.ts` の `checkSlideOverflow` 関数）は、元アプリ [minorun365/marp-agent](https://github.com/minorun365/marp-agent) の `_check_slide_overflow` 関数（[amplify/agent/runtime/tools/output_slide.py](https://github.com/minorun365/marp-agent/blob/main/amplify/agent/runtime/tools/output_slide.py)）に準拠する。元アプリのロジックが変更された場合は追従すること
