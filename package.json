@@ -1,0 +1,60 @@
+{
+  "name": "marp-agent-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "type": "module",
+  "description": "Marp slide generation MCP server with preview UI",
+  "license": "MIT",
+  "main": "dist/server.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit && cross-env INPUT=mcp-app.html vite build && tsc -p tsconfig.server.json && bun build server.ts --outdir dist --target node && bun build main.ts --outfile dist/index.js --target node --external \"./server.js\" --banner \"#!/usr/bin/env node\"",
+    "watch": "cross-env INPUT=mcp-app.html vite build --watch",
+    "serve": "bun --watch main.ts",
+    "serve:stdio": "bun main.ts --stdio",
+    "start": "cross-env NODE_ENV=development pnpm run build && pnpm run serve",
+    "start:stdio": "cross-env NODE_ENV=development pnpm run build 1>&2 && pnpm run serve:stdio",
+    "dev": "cross-env NODE_ENV=development concurrently \"pnpm run watch\" \"pnpm run serve\"",
+    "lint": "biome check",
+    "format": "biome check --write",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.3.2",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "get-east-asian-width": "^1.3.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.10",
+    "@marp-team/marp-core": "^4.3.0",
+    "@marp-team/marpit-svg-polyfill": "^2.1.0",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/node": "^25.5.0",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "typescript": "6.0.2",
+    "vite": "8.0.3",
+    "vite-plugin-singlefile": "2.3.2"
+  },
+  "types": "dist/server.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    }
+  },
+  "bin": {
+    "marp-agent-mcp": "dist/index.js"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}

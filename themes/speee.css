@@ -14,7 +14,7 @@
  */
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&family=Roboto+Mono&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/tomorrow-night-blue.min.css");
-svg[data-marp-fitting=svg] {
+svg[data-marp-fitting="svg"] {
   max-height: 580px;
 }
 
@@ -113,7 +113,7 @@ pre code {
   padding: 0.5em;
   font-size: 0.7em;
 }
-pre code svg[data-marp-fitting=svg] {
+pre code svg[data-marp-fitting="svg"] {
   max-height: calc(580px - 1em);
 }
 
@@ -122,7 +122,8 @@ blockquote {
   padding: 0 1em;
   position: relative;
 }
-blockquote::after, blockquote::before {
+blockquote::after,
+blockquote::before {
   content: "\201C";
   display: block;
   font-family: "Times New Roman", serif;
@@ -281,12 +282,12 @@ section.top h6 {
   text-align: center;
   font-weight: normal;
 }
-section.top h1 svg[data-marp-fitting=svg],
-section.top h2 svg[data-marp-fitting=svg],
-section.top h3 svg[data-marp-fitting=svg],
-section.top h4 svg[data-marp-fitting=svg],
-section.top h5 svg[data-marp-fitting=svg],
-section.top h6 svg[data-marp-fitting=svg] {
+section.top h1 svg[data-marp-fitting="svg"],
+section.top h2 svg[data-marp-fitting="svg"],
+section.top h3 svg[data-marp-fitting="svg"],
+section.top h4 svg[data-marp-fitting="svg"],
+section.top h5 svg[data-marp-fitting="svg"],
+section.top h6 svg[data-marp-fitting="svg"] {
   --preserve-aspect-ratio: xMidYMid meet;
 }
 section.top p {
@@ -301,7 +302,9 @@ section.top blockquote > h6,
 section.top blockquote > p {
   text-align: left;
 }
-section.top blockquote svg[data-marp-fitting=svg]:not([data-marp-fitting-math]) {
+section.top
+  blockquote
+  svg[data-marp-fitting="svg"]:not([data-marp-fitting-math]) {
   --preserve-aspect-ratio: xMinYMin meet;
 }
 section.top ul > li > p,
@@ -342,12 +345,12 @@ section.lead h6 {
   text-align: center;
   font-weight: normal;
 }
-section.lead h1 svg[data-marp-fitting=svg],
-section.lead h2 svg[data-marp-fitting=svg],
-section.lead h3 svg[data-marp-fitting=svg],
-section.lead h4 svg[data-marp-fitting=svg],
-section.lead h5 svg[data-marp-fitting=svg],
-section.lead h6 svg[data-marp-fitting=svg] {
+section.lead h1 svg[data-marp-fitting="svg"],
+section.lead h2 svg[data-marp-fitting="svg"],
+section.lead h3 svg[data-marp-fitting="svg"],
+section.lead h4 svg[data-marp-fitting="svg"],
+section.lead h5 svg[data-marp-fitting="svg"],
+section.lead h6 svg[data-marp-fitting="svg"] {
   --preserve-aspect-ratio: xMidYMid meet;
 }
 section.lead p {
@@ -362,7 +365,9 @@ section.lead blockquote > h6,
 section.lead blockquote > p {
   text-align: left;
 }
-section.lead blockquote svg[data-marp-fitting=svg]:not([data-marp-fitting-math]) {
+section.lead
+  blockquote
+  svg[data-marp-fitting="svg"]:not([data-marp-fitting-math]) {
   --preserve-aspect-ratio: xMinYMin meet;
 }
 section.lead ul > li > p,

@@ -1,54 +1,20 @@
+/* App-specific variables */
 :root {
-  /*
-   * ホストから提供される可能性がある変数（フォールバック値）
-   * applyHostStyleVariables() で上書きされる場合がある
-   */
-  --color-background-primary: #ffffff;
-  --color-background-tertiary: #e8e8e8;
-  --color-text-primary: #333333;
-  --color-text-secondary: #666666;
-  --color-border-primary: #cccccc;
-
-  /* アプリ独自の変数（ホストからは提供されない） */
-  --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --app-shadow-sm: light-dark(
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.4)
+  );
   --app-border-radius: 4px;
-  --app-text-on-accent: #ffffff;
-  --app-toast-background: #e74c3c;
+  --app-text-on-accent: light-dark(#ffffff, #f5f5f5);
+  --app-toast-background: light-dark(#e74c3c, #c0392b);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* ホスト変数のダークモードフォールバック */
-    --color-background-primary: #1a1a1a;
-    --color-background-tertiary: #2d2d2d;
-    --color-text-primary: #e0e0e0;
-    --color-text-secondary: #999999;
-    --color-border-primary: #444444;
-
-    /* アプリ独自変数のダークモード値 */
-    --app-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-    --app-text-on-accent: #f5f5f5;
-    --app-toast-background: #c0392b;
-  }
-}
-
-* {
-  box-sizing: border-box;
+body {
   margin: 0;
-  padding: 0;
 }
 
 html,
 body {
-  font-family: var(
-    --font-sans,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif
-  );
-  color: var(--color-text-primary);
   overflow: hidden;
 }
 
@@ -108,7 +74,7 @@ body {
   padding: 4px 16px 16px 16px;
 }
 
-/* シングルスライド表示 */
+/* Single slide display */
 #previewContainer svg {
   display: block;
   width: 100%;
@@ -116,7 +82,7 @@ body {
   box-shadow: var(--app-shadow-sm);
 }
 
-/* トースト通知 */
+/* Toast notification */
 .toast {
   position: fixed;
   top: 12px;

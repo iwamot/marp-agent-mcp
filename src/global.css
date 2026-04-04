@@ -1,0 +1,32 @@
+:root {
+  color-scheme: light dark;
+
+  /*
+   * Fallbacks for host style variables used by this app.
+   * The host may provide these (and many more) via the host context.
+   */
+  --color-text-primary: light-dark(#1f2937, #f3f4f6);
+  --color-text-secondary: light-dark(#6b7280, #9ca3af);
+  --color-background-primary: light-dark(#ffffff, #1a1a1a);
+  --color-background-tertiary: light-dark(#e8e8e8, #2d2d2d);
+  --color-border-primary: light-dark(#cccccc, #444444);
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-weight-normal: 400;
+  --font-text-md-size: 1rem;
+  --font-text-md-line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-text-md-size);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--font-text-md-line-height);
+  color: var(--color-text-primary);
+}

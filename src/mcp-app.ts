@@ -1,3 +1,6 @@
+/**
+ * @file MCP App for Marp slide preview with theme switching and export functionality.
+ */
 import Marp from "@marp-team/marp-core";
 import { observe } from "@marp-team/marpit-svg-polyfill";
 import {
@@ -5,40 +8,55 @@ import {
   applyDocumentTheme,
   applyHostFonts,
   applyHostStyleVariables,
+  type McpUiHostContext,
 } from "@modelcontextprotocol/ext-apps";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import "./styles.css";
+import {
+  DEFAULT_THEME,
+  SERVER_TOOL_TIMEOUT_MS,
+  type ThemeId,
+  VERSION,
+} from "../constants.js";
+import "./global.css";
+import "./mcp-app.css";
 
-// テーマCSS（Viteの?rawでインポート）
-import borderTheme from "./themes/border.css?raw";
-import gradientTheme from "./themes/gradient.css?raw";
-import speeeTheme from "./themes/speee.css?raw";
+// Theme CSS (imported as raw strings via Vite)
+import borderTheme from "../themes/border.css?raw";
+import gradientTheme from "../themes/gradient.css?raw";
+import speeeTheme from "../themes/speee.css?raw";
 
-// テーマ定義
+// Structured content from preview_slide tool
+interface PreviewResultData {
+  markdown: string;
+  theme: ThemeId;
+}
+
+// Structured content from export_pdf / export_pptx tools
+interface ExportResultData {
+  data_base64: string;
+  filename: string;
+  mime_type: string;
+}
+
+// Theme definitions
 const THEMES = [
   { id: "speee", name: "Speee", css: speeeTheme },
   { id: "border", name: "Border", css: borderTheme },
   { id: "gradient", name: "Gradient", css: gradientTheme },
 ] as const;
 
-type ThemeId = (typeof THEMES)[number]["id"];
-
-// Marpインスタンス（テーマ登録済み）
+// Marp instance with registered themes
 const marp = new Marp();
 for (const theme of THEMES) {
   marp.themeSet.add(theme.css);
 }
 
-// MCP App
-const app = new App(
-  { name: "Marp Preview", version: "1.0.0" },
-  {},
-  { autoResize: true },
-);
+// MCP App instance
+const app = new App({ name: "Marp Preview", version: VERSION });
 
-// 状態
+// App state
 let currentMarkdown: string | null = null;
-let currentTheme: ThemeId = "speee";
+let currentTheme: ThemeId = DEFAULT_THEME;
 let currentPage = 0;
 let totalPages = 1;
 let slides: string[] = [];
@@ -47,7 +65,29 @@ let slides: string[] = [];
 let canCallServerTools = false;
 let canDownloadFile = false;
 
-// DOM要素
+// Main element for safe area insets
+const mainEl = document.querySelector(".main") as HTMLElement;
+
+// Handle host context changes (theme, styles, safe area)
+function handleHostContextChanged(ctx: McpUiHostContext) {
+  if (ctx.theme) {
+    applyDocumentTheme(ctx.theme);
+  }
+  if (ctx.styles?.variables) {
+    applyHostStyleVariables(ctx.styles.variables);
+  }
+  if (ctx.styles?.css?.fonts) {
+    applyHostFonts(ctx.styles.css.fonts);
+  }
+  if (ctx.safeAreaInsets) {
+    mainEl.style.paddingTop = `${ctx.safeAreaInsets.top}px`;
+    mainEl.style.paddingRight = `${ctx.safeAreaInsets.right}px`;
+    mainEl.style.paddingBottom = `${ctx.safeAreaInsets.bottom}px`;
+    mainEl.style.paddingLeft = `${ctx.safeAreaInsets.left}px`;
+  }
+}
+
+// DOM elements
 const themeSelect = document.getElementById("themeSelect") as HTMLSelectElement;
 const firstBtn = document.getElementById("firstBtn") as HTMLButtonElement;
 const prevBtn = document.getElementById("prevBtn") as HTMLButtonElement;
@@ -65,7 +105,7 @@ const slideContainer = document.querySelector(
   "#previewContainer .marpit",
 ) as HTMLElement;
 
-// テーマオプションを設定
+// Populate theme options
 for (const theme of THEMES) {
   const option = document.createElement("option");
   option.value = theme.id;
@@ -73,9 +113,9 @@ for (const theme of THEMES) {
   themeSelect.appendChild(option);
 }
 
-// マークダウンにテーマを注入
+// Inject theme into markdown frontmatter
 function injectTheme(markdown: string, theme: ThemeId): string {
-  // 旧スタイルのインラインディレクティブを統一
+  // Normalize legacy inline directives
   const normalized = markdown.replace(
     /<!-- _backgroundColor: #303030 -->\s*<!-- _color: white -->/g,
     "<!-- _class: lead -->",
@@ -108,7 +148,7 @@ function injectTheme(markdown: string, theme: ThemeId): string {
 }
 
 function showToast(message: string) {
-  // 既存のトーストがあれば削除
+  // Remove existing toast if present
   const existingToast = document.querySelector(".toast");
   if (existingToast) {
     existingToast.remove();
@@ -119,7 +159,7 @@ function showToast(message: string) {
   toast.textContent = message;
   document.body.appendChild(toast);
 
-  // 3秒後にフェードアウトして削除
+  // Fade out and remove after 3 seconds
   setTimeout(() => {
     toast.classList.add("toast-hide");
     toast.addEventListener("animationend", () => {
@@ -158,19 +198,19 @@ function updatePageInfo() {
 function updateDownloadAvailability() {
   const unavailableMessage = "この環境ではダウンロードできません";
 
-  // downloadFile があればセレクト＋ボタンを有効化
+  // Enable select and button if downloadFile is available
   downloadFormat.disabled = !canDownloadFile;
   downloadBtn.disabled = !canDownloadFile;
   downloadBtn.title = canDownloadFile ? "" : unavailableMessage;
 
-  // serverTools がなければ PDF/PPTX オプションを無効化
+  // Disable PDF/PPTX options if serverTools is unavailable
   for (const option of downloadFormat.options) {
     if (option.value !== "md") {
       option.disabled = !canCallServerTools;
     }
   }
 
-  // 現在の選択が無効になった場合は Markdown に切り替え
+  // Fall back to Markdown if current selection becomes unavailable
   if (!canCallServerTools && downloadFormat.value !== "md") {
     downloadFormat.value = "md";
   }
@@ -181,11 +221,11 @@ function resetDownloadButton() {
   downloadBtn.disabled = !canDownloadFile;
 }
 
-// 現在のスライドを表示（1ページずつ）
+// Display current slide (one page at a time)
 function showCurrentSlide() {
   slideContainer.innerHTML = slides[currentPage];
 
-  // リンクをホスト経由で開くように設定（iframeサンドボックス対応）
+  // Configure links to open via host (for iframe sandbox compatibility)
   for (const link of slideContainer.querySelectorAll("a[href]")) {
     link.addEventListener("click", (e) => {
       e.preventDefault();
@@ -196,11 +236,11 @@ function showCurrentSlide() {
     });
   }
 
-  // Safari/iOS WebKit向けのpolyfillを適用
+  // Apply polyfill for Safari/iOS WebKit
   observe(previewContainer);
 }
 
-// スライドレンダリング
+// Render slides from markdown
 function renderSlides() {
   if (!currentMarkdown) return;
 
@@ -208,14 +248,14 @@ function renderSlides() {
     const markdownWithTheme = injectTheme(currentMarkdown, currentTheme);
     const { html, css } = marp.render(markdownWithTheme);
 
-    // SVG要素を抽出
+    // Extract SVG elements
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
     const svgs = doc.querySelectorAll("svg[data-marpit-svg]");
 
     slides = Array.from(svgs).map((svg) => svg.outerHTML);
 
-    // CSSを更新
+    // Update CSS
     slideStyle.textContent = css;
 
     totalPages = slides.length;
@@ -253,13 +293,6 @@ async function triggerDownload(
   resetDownloadButton();
 }
 
-// structuredContent の型定義
-interface ExportResultData {
-  data_base64: string;
-  filename: string;
-  mime_type: string;
-}
-
 async function handleToolResult(result: CallToolResult) {
   const data = result.structuredContent as ExportResultData | undefined;
   if (data?.data_base64) {
@@ -269,7 +302,7 @@ async function handleToolResult(result: CallToolResult) {
   }
 }
 
-// Markdownダウンロード
+// Download as Markdown
 async function handleMarkdownDownload() {
   if (!currentMarkdown) return;
   downloadBtn.disabled = true;
@@ -302,7 +335,7 @@ async function handleMarkdownDownload() {
   resetDownloadButton();
 }
 
-// サーバーエクスポートの共通ハンドラ
+// Common handler for server-side export
 async function handleServerExport(
   toolName: string,
   args: Record<string, unknown>,
@@ -311,10 +344,15 @@ async function handleServerExport(
   downloadBtn.disabled = true;
   downloadBtn.textContent = "wait...";
   try {
-    const result = await app.callServerTool({
-      name: toolName,
-      arguments: { markdown: currentMarkdown, theme: currentTheme, ...args },
-    });
+    console.info(`Calling ${toolName} tool...`);
+    const result = await app.callServerTool(
+      {
+        name: toolName,
+        arguments: { markdown: currentMarkdown, theme: currentTheme, ...args },
+      },
+      { timeout: SERVER_TOOL_TIMEOUT_MS },
+    );
+    console.info(`${toolName} result:`, result);
     if (result && !result.isError) {
       handleToolResult(result);
     } else {
@@ -323,11 +361,14 @@ async function handleServerExport(
     }
   } catch (e) {
     console.error(`${toolName} failed:`, e);
+    const errorMessage =
+      e instanceof Error ? e.message : "エクスポートに失敗しました";
+    showToast(errorMessage);
     resetDownloadButton();
   }
 }
 
-// イベントリスナー
+// Event listeners
 themeSelect.addEventListener("change", () => {
   currentTheme = themeSelect.value as ThemeId;
   if (currentMarkdown) {
@@ -380,14 +421,9 @@ downloadBtn.addEventListener("click", async () => {
   }
 });
 
-// structuredContent の型定義（プレビュー用）
-interface PreviewResultData {
-  markdown: string;
-  theme: string;
-}
-
-// MCP Appハンドラ
+// MCP App handlers
 app.ontoolresult = (result) => {
+  console.info("Received tool call result:", result);
   const data = result.structuredContent as PreviewResultData | undefined;
   if (data?.markdown) {
     currentMarkdown = data.markdown;
@@ -397,53 +433,32 @@ app.ontoolresult = (result) => {
     }
     renderSlides();
 
-    // コントロールを有効化
+    // Enable controls
     themeSelect.disabled = false;
     updateDownloadAvailability();
   }
 };
 
-app.onhostcontextchanged = (ctx) => {
-  if (ctx.theme) {
-    applyDocumentTheme(ctx.theme);
-  }
-  if (ctx.styles?.variables) {
-    applyHostStyleVariables(ctx.styles.variables);
-  }
-  if (ctx.styles?.css?.fonts) {
-    applyHostFonts(ctx.styles.css.fonts);
-  }
-  if (ctx.safeAreaInsets) {
-    document.body.style.paddingTop = `${ctx.safeAreaInsets.top}px`;
-    document.body.style.paddingRight = `${ctx.safeAreaInsets.right}px`;
-    document.body.style.paddingBottom = `${ctx.safeAreaInsets.bottom}px`;
-    document.body.style.paddingLeft = `${ctx.safeAreaInsets.left}px`;
-  }
-};
-
-app.ontoolcancelled = () => {
+app.ontoolcancelled = (params) => {
+  console.info("Tool call cancelled:", params.reason);
   resetDownloadButton();
 };
 
 app.onerror = console.error;
 
-// 初期化
+app.onhostcontextchanged = handleHostContextChanged;
+
+// Initialization
 async function main() {
   await app.connect();
 
-  // 初期スタイルを適用
+  // Apply initial styles
   const hostContext = app.getHostContext();
-  if (hostContext?.theme) {
-    applyDocumentTheme(hostContext.theme);
-  }
-  if (hostContext?.styles?.variables) {
-    applyHostStyleVariables(hostContext.styles.variables);
-  }
-  if (hostContext?.styles?.css?.fonts) {
-    applyHostFonts(hostContext.styles.css.fonts);
+  if (hostContext) {
+    handleHostContextChanged(hostContext);
   }
 
-  // Host capabilities をチェック
+  // Check host capabilities
   const caps = app.getHostCapabilities();
   canCallServerTools = !!caps?.serverTools;
   canDownloadFile = !!caps?.downloadFile;

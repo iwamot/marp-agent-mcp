@@ -7,17 +7,17 @@
   <title>Marp Slide Preview</title>
 </head>
 <body>
-  <div id="app">
+  <main class="main">
     <div class="toolbar">
       <div class="toolbar-row">
         <div class="toolbar-group">
           <select id="themeSelect" disabled></select>
         </div>
         <div class="toolbar-group">
-          <button id="firstBtn" disabled>&lt;&lt;</button>
-          <button id="prevBtn" disabled>&lt;</button>
-          <button id="nextBtn" disabled>&gt;</button>
-          <button id="lastBtn" disabled>&gt;&gt;</button>
+          <button type="button" id="firstBtn" disabled>&lt;&lt;</button>
+          <button type="button" id="prevBtn" disabled>&lt;</button>
+          <button type="button" id="nextBtn" disabled>&gt;</button>
+          <button type="button" id="lastBtn" disabled>&gt;&gt;</button>
         </div>
       </div>
       <div class="toolbar-row">
@@ -28,7 +28,7 @@
             <option value="pptx-editable">Editable PPTX</option>
             <option value="md">Markdown</option>
           </select>
-          <button id="downloadBtn" disabled>Download</button>
+          <button type="button" id="downloadBtn" disabled>Download</button>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <style id="slideStyle"></style>
       <div class="marpit"></div>
     </div>
-  </div>
-  <script type="module" src="/src/main.ts"></script>
+  </main>
+  <script type="module" src="/src/mcp-app.ts"></script>
 </body>
 </html>

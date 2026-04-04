@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: Run Linting and Type Check
+    name: Run Linting, Type Check, and Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: production
@@ -24,11 +24,6 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
-      - name: Setup Takumi Guard for PyPI
-        uses: flatt-security/setup-takumi-guard-pypi@7d825811bb293b9e0230477165442580a0074280 # v1.0.0
-        with:
-          bot-id: BT01KN64BM5NBFHJNSSDYQWKE279
 
       - name: Setup Takumi Guard for npm
         uses: flatt-security/setup-takumi-guard-npm@8f53b50568e4466f2d92504f349c05b9ffcb8b59 # v1

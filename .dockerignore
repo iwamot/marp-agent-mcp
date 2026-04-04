@@ -1,13 +1,3 @@
-# Python
-**/.venv
-**/__pycache__
-**/*.pyc
-**/*.pyo
-
-# Linter/Formatter caches
-**/.ruff_cache
-**/.mypy_cache
-
 # Node.js
 **/node_modules
 
@@ -22,7 +12,6 @@
 
 # Documentation
 *.md
-!client/README.md
 
 # Docker
 Dockerfile
