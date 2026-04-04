@@ -31,25 +31,25 @@ importers:
         specifier: 2.4.10
         version: 2.4.10
       '@marp-team/marp-core':
-        specifier: ^4.3.0
+        specifier: 4.3.0
         version: 4.3.0
       '@marp-team/marpit-svg-polyfill':
-        specifier: ^2.1.0
+        specifier: 2.1.0
         version: 2.1.0(@marp-team/marpit@3.2.1)
       '@types/cors':
-        specifier: ^2.8.18
+        specifier: 2.8.19
         version: 2.8.19
       '@types/express':
-        specifier: ^5.0.2
+        specifier: 5.0.6
         version: 5.0.6
       '@types/node':
-        specifier: ^25.5.0
+        specifier: 25.5.0
         version: 25.5.0
       concurrently:
-        specifier: ^9.2.1
+        specifier: 9.2.1
         version: 9.2.1
       cross-env:
-        specifier: ^10.1.0
+        specifier: 10.1.0
         version: 10.1.0
       typescript:
         specifier: 6.0.2
