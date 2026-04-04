@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
+  "extends": ["config:best-practices", "workarounds:typesNodeVersioning", "workarounds:nodeDockerVersioning"],
   "labels": ["dependencies"],
   "rebaseWhen": "conflicted",
   "prHourlyLimit": 0,
@@ -34,6 +34,12 @@
         "commands": ["pnpm exec biome migrate --write"],
         "fileFilters": ["biome.json"]
       }
+    },
+    {
+      "description": "Restrict Node.js to LTS versions",
+      "matchManagers": ["mise"],
+      "matchPackageNames": ["node"],
+      "versioning": "node"
     },
     {
       "description": "Group mise tools updates",
