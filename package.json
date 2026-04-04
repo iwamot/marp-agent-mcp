@@ -34,7 +34,6 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.10",
     "@marp-team/marp-core": "4.3.0",
-    "@marp-team/marpit-svg-polyfill": "2.1.0",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
     "@types/node": "24.12.2",

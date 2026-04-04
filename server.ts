@@ -334,6 +334,7 @@ export function createServer(): McpServer {
       "https://fonts.googleapis.com",
       "https://fonts.gstatic.com",
       "https://esm.sh",
+      "https://cdn.jsdelivr.net",
     ],
     connectDomains: ["https://esm.sh"],
   };
