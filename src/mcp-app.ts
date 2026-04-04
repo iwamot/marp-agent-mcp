@@ -2,7 +2,6 @@
  * @file MCP App for Marp slide preview with theme switching and export functionality.
  */
 import Marp from "@marp-team/marp-core";
-import { observe } from "@marp-team/marpit-svg-polyfill";
 import {
   App,
   applyDocumentTheme,
@@ -97,9 +96,6 @@ const downloadFormat = document.getElementById(
   "downloadFormat",
 ) as HTMLSelectElement;
 const downloadBtn = document.getElementById("downloadBtn") as HTMLButtonElement;
-const previewContainer = document.getElementById(
-  "previewContainer",
-) as HTMLElement;
 const slideStyle = document.getElementById("slideStyle") as HTMLStyleElement;
 const slideContainer = document.querySelector(
   "#previewContainer .marpit",
@@ -235,9 +231,6 @@ function showCurrentSlide() {
       }
     });
   }
-
-  // Apply polyfill for Safari/iOS WebKit
-  observe(previewContainer);
 }
 
 // Render slides from markdown
