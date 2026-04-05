@@ -156,8 +156,17 @@ validate_slide({ markdown: "生成したマークダウン" })
 検証OKなら `preview_slide` でプレビューUIを表示する。
 
 ```
-preview_slide({ markdown: "生成したマークダウン", theme: "speee" })
+preview_slide({ markdown: "生成したマークダウン", theme: "speee", name: "ai-history" })
 ```
+
+#### スライド名（name）
+
+`name` パラメータには、スライドを識別する短い名前を指定する。
+
+- 英小文字・数字・ハイフンのみ使用
+- 例：`ai-history`, `project-proposal`, `quarterly-report`
+- 省略時は `slide`
+- ダウンロード時のファイル名として使用される（`{name}.pdf` 等）
 
 ### 6. プレビュー後
 
