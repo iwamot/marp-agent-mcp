@@ -65,6 +65,14 @@ export {
 // Theme schema
 const ThemeSchema = z.enum(THEMES);
 
+// Name schema (for download filename)
+const NameSchema = z
+  .string()
+  .regex(
+    /^[a-z0-9-]+$/,
+    "Only lowercase letters, numbers, and hyphens are allowed",
+  );
+
 // Resource URI for the MCP App UI
 const resourceUri = "ui://marp-agent/preview.html";
 
@@ -379,18 +387,34 @@ Theme changes are reflected immediately on the client side.`,
         theme: ThemeSchema.optional().describe(
           "Theme name (speee, border, gradient). Defaults to speee",
         ),
+        name: NameSchema.optional().describe(
+          "Slide name for filename (a-z, 0-9, hyphens only). Defaults to slide",
+        ),
       },
-      outputSchema: z.object({ markdown: z.string(), theme: z.string() }),
+      outputSchema: z.object({
+        markdown: z.string(),
+        theme: z.string(),
+        name: z.string(),
+      }),
       _meta: { ui: { resourceUri } },
     },
-    async ({ markdown, theme }) => {
+    async ({ markdown, theme, name }) => {
       const resolvedTheme = theme ?? DEFAULT_THEME;
+      const resolvedName = name ?? "slide";
       return {
-        structuredContent: { markdown, theme: resolvedTheme },
+        structuredContent: {
+          markdown,
+          theme: resolvedTheme,
+          name: resolvedName,
+        },
         content: [
           {
             type: "text" as const,
-            text: JSON.stringify({ markdown, theme: resolvedTheme }),
+            text: JSON.stringify({
+              markdown,
+              theme: resolvedTheme,
+              name: resolvedName,
+            }),
           },
         ],
       };
@@ -477,6 +501,9 @@ are within limits. Always validate with this tool after creating or editing slid
         theme: ThemeSchema.optional().describe(
           "Theme name (speee, border, gradient). Defaults to speee",
         ),
+        name: NameSchema.optional().describe(
+          "Slide name for filename (a-z, 0-9, hyphens only). Defaults to slide",
+        ),
       },
       outputSchema: z.object({
         data_base64: z.string(),
@@ -484,13 +511,14 @@ are within limits. Always validate with this tool after creating or editing slid
         mime_type: z.string(),
       }),
     },
-    async ({ markdown, theme }) => {
+    async ({ markdown, theme, name }) => {
       const resolvedTheme = theme ?? DEFAULT_THEME;
+      const resolvedName = name ?? "slide";
       try {
         const pdfBytes = await generatePdf(markdown, resolvedTheme);
         const result = {
           data_base64: pdfBytes.toString("base64"),
-          filename: "slide.pdf",
+          filename: `${resolvedName}.pdf`,
           mime_type: "application/pdf",
         };
         return {
@@ -514,6 +542,9 @@ are within limits. Always validate with this tool after creating or editing slid
         theme: ThemeSchema.optional().describe(
           "Theme name (speee, border, gradient). Defaults to speee",
         ),
+        name: NameSchema.optional().describe(
+          "Slide name for filename (a-z, 0-9, hyphens only). Defaults to slide",
+        ),
         editable: z
           .boolean()
           .optional()
@@ -527,15 +558,16 @@ are within limits. Always validate with this tool after creating or editing slid
         mime_type: z.string(),
       }),
     },
-    async ({ markdown, theme, editable }) => {
+    async ({ markdown, theme, name, editable }) => {
       const resolvedTheme = theme ?? DEFAULT_THEME;
+      const resolvedName = name ?? "slide";
       try {
         const pptxBytes = editable
           ? await generateEditablePptx(markdown, resolvedTheme)
           : await generatePptx(markdown, resolvedTheme);
         const result = {
           data_base64: pptxBytes.toString("base64"),
-          filename: "slide.pptx",
+          filename: `${resolvedName}.pptx`,
           mime_type:
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
         };

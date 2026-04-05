@@ -28,6 +28,7 @@ import speeeTheme from "../themes/speee.css?raw";
 interface PreviewResultData {
   markdown: string;
   theme: ThemeId;
+  name: string;
 }
 
 // Structured content from export_pdf / export_pptx tools
@@ -56,6 +57,7 @@ const app = new App({ name: "Marp Preview", version: VERSION });
 // App state
 let currentMarkdown: string | null = null;
 let currentTheme: ThemeId = DEFAULT_THEME;
+let currentName = "slide";
 let currentPage = 0;
 let totalPages = 1;
 let slides: string[] = [];
@@ -314,7 +316,7 @@ async function handleMarkdownDownload() {
         {
           type: "resource",
           resource: {
-            uri: "file:///slide.md",
+            uri: `file:///${currentName}.md`,
             mimeType: "text/markdown",
             blob: base64Data,
           },
@@ -341,7 +343,12 @@ async function handleServerExport(
     const result = await app.callServerTool(
       {
         name: toolName,
-        arguments: { markdown: currentMarkdown, theme: currentTheme, ...args },
+        arguments: {
+          markdown: currentMarkdown,
+          theme: currentTheme,
+          name: currentName,
+          ...args,
+        },
       },
       { timeout: SERVER_TOOL_TIMEOUT_MS },
     );
@@ -423,6 +430,9 @@ app.ontoolresult = (result) => {
     if (data.theme) {
       currentTheme = data.theme as ThemeId;
       themeSelect.value = currentTheme;
+    }
+    if (data.name) {
+      currentName = data.name;
     }
     renderSlides();
 
