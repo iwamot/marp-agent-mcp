@@ -38,6 +38,12 @@ interface ExportResultData {
   mime_type: string;
 }
 
+// Logger with prefix
+const log = {
+  info: console.log.bind(console, "[MARP-AGENT-MCP]"),
+  error: console.error.bind(console, "[MARP-AGENT-MCP]"),
+};
+
 // Theme definitions
 const THEMES = [
   { id: "speee", name: "Speee", css: speeeTheme },
@@ -167,8 +173,6 @@ function showToast(message: string) {
 }
 
 function showError(result: CallToolResult | undefined) {
-  let errorMessage = "予期せぬエラーが発生しました";
-
   if (result) {
     const content = result.content;
     if (content && content.length > 0) {
@@ -176,12 +180,12 @@ function showError(result: CallToolResult | undefined) {
         (c: { type: string }) => c.type === "text",
       );
       if (textContent && textContent.type === "text") {
-        errorMessage = textContent.text;
+        log.error("Server tool error:", textContent.text);
       }
     }
   }
 
-  showToast(errorMessage);
+  showToast("エクスポートに失敗しました");
 }
 
 function updatePageInfo() {
@@ -257,7 +261,7 @@ function renderSlides() {
     updatePageInfo();
     showCurrentSlide();
   } catch (error) {
-    console.error("Render failed:", error);
+    log.error("Error rendering slide:", error);
     showToast("レンダリングに失敗しました");
   }
 }
@@ -268,7 +272,7 @@ async function triggerDownload(
   mimeType: string,
 ) {
   try {
-    await app.downloadFile({
+    const { isError } = await app.downloadFile({
       contents: [
         {
           type: "resource",
@@ -280,9 +284,13 @@ async function triggerDownload(
         },
       ],
     });
+    if (isError) {
+      log.info("Download was cancelled or denied by host");
+    }
   } catch (e) {
-    console.error("downloadFile failed:", e);
-    showToast("ダウンロードに失敗しました");
+    // Timeout or other errors - user can still interact with the dialog
+    const ext = filename.split(".").pop()?.toUpperCase() || "Unknown";
+    log.error(`${ext} download error:`, e);
   }
 
   resetDownloadButton();
@@ -324,7 +332,7 @@ async function handleMarkdownDownload() {
       ],
     });
   } catch (e) {
-    console.error("Markdown download failed:", e);
+    log.error("Markdown download error:", e);
     showToast("ダウンロードに失敗しました");
   }
   resetDownloadButton();
@@ -339,7 +347,7 @@ async function handleServerExport(
   downloadBtn.disabled = true;
   downloadBtn.textContent = "wait...";
   try {
-    console.info(`Calling ${toolName} tool...`);
+    log.info(`Calling ${toolName} tool...`);
     const result = await app.callServerTool(
       {
         name: toolName,
@@ -352,7 +360,7 @@ async function handleServerExport(
       },
       { timeout: SERVER_TOOL_TIMEOUT_MS },
     );
-    console.info(`${toolName} result:`, result);
+    log.info(`${toolName} result:`, result);
     if (result && !result.isError) {
       handleToolResult(result);
     } else {
@@ -360,10 +368,8 @@ async function handleServerExport(
       resetDownloadButton();
     }
   } catch (e) {
-    console.error(`${toolName} failed:`, e);
-    const errorMessage =
-      e instanceof Error ? e.message : "エクスポートに失敗しました";
-    showToast(errorMessage);
+    log.error(`${toolName} failed:`, e);
+    showToast("エクスポートに失敗しました");
     resetDownloadButton();
   }
 }
@@ -423,7 +429,7 @@ downloadBtn.addEventListener("click", async () => {
 
 // MCP App handlers
 app.ontoolresult = (result) => {
-  console.info("Received tool call result:", result);
+  log.info("Received tool result:", result);
   const data = result.structuredContent as PreviewResultData | undefined;
   if (data?.markdown) {
     currentMarkdown = data.markdown;
@@ -443,28 +449,38 @@ app.ontoolresult = (result) => {
 };
 
 app.ontoolcancelled = (params) => {
-  console.info("Tool call cancelled:", params.reason);
+  log.info("Tool call cancelled:", params.reason);
   resetDownloadButton();
 };
 
-app.onerror = console.error;
+app.onerror = (err: unknown) => {
+  log.error("App error:", err);
+};
+
+app.onteardown = async () => {
+  log.info("App is being torn down");
+  return {};
+};
 
 app.onhostcontextchanged = handleHostContextChanged;
 
-// Initialization
-async function main() {
-  await app.connect();
+// Connect to host
+app
+  .connect()
+  .then(() => {
+    log.info("Connected to host");
 
-  // Apply initial styles
-  const hostContext = app.getHostContext();
-  if (hostContext) {
-    handleHostContextChanged(hostContext);
-  }
+    // Apply initial styles
+    const hostContext = app.getHostContext();
+    if (hostContext) {
+      handleHostContextChanged(hostContext);
+    }
 
-  // Check host capabilities
-  const caps = app.getHostCapabilities();
-  canCallServerTools = !!caps?.serverTools;
-  canDownloadFile = !!caps?.downloadFile;
-}
-
-main();
+    // Check host capabilities
+    const caps = app.getHostCapabilities();
+    canCallServerTools = !!caps?.serverTools;
+    canDownloadFile = !!caps?.downloadFile;
+  })
+  .catch((err: unknown) => {
+    log.error("Failed to connect to host:", err);
+  });

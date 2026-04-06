@@ -14,7 +14,7 @@ import { execFile } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { debuglog, promisify } from "node:util";
+import { promisify } from "node:util";
 
 import {
   RESOURCE_MIME_TYPE,
@@ -35,8 +35,6 @@ import {
   type ThemeId,
   VERSION,
 } from "./constants.js";
-
-const debug = debuglog("marp");
 
 const execFileAsync = promisify(execFile);
 
@@ -280,13 +278,13 @@ async function runMarpCli(
       // Theme file doesn't exist, use default
     }
 
-    debug("Running: marp %s", args.join(" "));
+    console.error(`[marp-agent-mcp] Running: marp ${args.join(" ")}`);
     const { stdout, stderr } = await execFileAsync("marp", args, {
       timeout: MARP_CLI_TIMEOUT_MS,
     });
-    if (stdout) debug("stdout: %s", stdout);
-    if (stderr) debug("stderr: %s", stderr);
-    debug("Completed successfully");
+    if (stdout) console.error("[marp-agent-mcp] stdout:", stdout);
+    if (stderr) console.error("[marp-agent-mcp] stderr:", stderr);
+    console.error("[marp-agent-mcp] Completed successfully");
 
     return await fs.readFile(outputPath);
   } finally {
@@ -526,6 +524,7 @@ are within limits. Always validate with this tool after creating or editing slid
           content: [{ type: "text" as const, text: JSON.stringify(result) }],
         };
       } catch (e) {
+        console.error("[marp-agent-mcp] PDF generation failed:", e);
         const errorMessage = e instanceof Error ? e.message : String(e);
         throw new Error(`PDF生成に失敗しました: ${errorMessage}`);
       }
@@ -576,6 +575,7 @@ are within limits. Always validate with this tool after creating or editing slid
           content: [{ type: "text" as const, text: JSON.stringify(result) }],
         };
       } catch (e) {
+        console.error("[marp-agent-mcp] PPTX generation failed:", e);
         const errorMessage = e instanceof Error ? e.message : String(e);
         throw new Error(`PPTX生成に失敗しました: ${errorMessage}`);
       }
