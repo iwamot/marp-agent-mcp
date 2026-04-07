@@ -68,6 +68,11 @@
       "groupName": "github-actions"
     },
     {
+      "description": "Disable minimumReleaseAge for lockFileMaintenance",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "minimumReleaseAge": null
+    },
+    {
       "description": "Automerge minor, patch, and digest updates",
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true
