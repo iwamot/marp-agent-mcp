@@ -73,8 +73,8 @@
       "minimumReleaseAge": null
     },
     {
-      "description": "Automerge minor, patch, and digest updates",
-      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "description": "Automerge minor, patch, digest, and lockFileMaintenance updates",
+      "matchUpdateTypes": ["minor", "patch", "digest", "lockFileMaintenance"],
       "automerge": true
     }
   ]
