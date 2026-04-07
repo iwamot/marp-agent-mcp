@@ -18,8 +18,8 @@
     "start": "cross-env NODE_ENV=development pnpm run build && pnpm run serve",
     "start:stdio": "cross-env NODE_ENV=development pnpm run build 1>&2 && pnpm run serve:stdio",
     "dev": "cross-env NODE_ENV=development concurrently \"pnpm run watch\" \"pnpm run serve\"",
-    "lint": "biome check",
-    "format": "biome check --write",
+    "check": "biome check",
+    "check:write": "biome check --write",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit",
     "test": "bun test"
   },
