@@ -1,19 +1,15 @@
 #!/bin/bash
 set -e
 
+# mise
 eval "$(mise activate bash)"
 mise install
 
-# TypeScript (Biome lint/format + tsc type check + tests)
+# TypeScript
 pnpm install --frozen-lockfile
+pnpm audit --fix --ignore-unfixable
 pnpm exec biome migrate --write
-if [[ -n "$CI" ]]; then
-  git diff --exit-code biome.json
-  pnpm run lint
-else
-  pnpm run lint --fix
-  pnpm run format
-fi
+pnpm run check:write
 pnpm run typecheck
 pnpm run test
 
@@ -21,12 +17,10 @@ pnpm run test
 hadolint Dockerfile
 
 # GitHub Actions
+pinact run
+zizmor --fix .github/workflows/
 actionlint
 ghalint run
-if [[ -n "$CI" ]]; then
-  zizmor .github/workflows/
-  pinact run --check
-else
-  zizmor --fix .github/workflows/
-  pinact run
-fi
+
+# Check for uncommitted changes
+git diff --exit-code -- . ':!.npmrc'
