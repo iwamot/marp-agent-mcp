@@ -5,7 +5,7 @@
 # ============================================
 # Stage 1: App build (client + server)
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8 AS app-builder
+FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:9707cd4542f400df5078df04f9652a272429112f15202d22b5b8bdd148df494f AS app-builder
 
 WORKDIR /app
 
@@ -27,7 +27,7 @@ RUN pnpm run build
 # ============================================
 # Stage 2: Marp CLI build
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8 AS marp-builder
+FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:9707cd4542f400df5078df04f9652a272429112f15202d22b5b8bdd148df494f AS marp-builder
 
 COPY .npmrc /root/.npmrc
 RUN npm install -g @marp-team/marp-cli@4.3.1
@@ -35,7 +35,7 @@ RUN npm install -g @marp-team/marp-cli@4.3.1
 # ============================================
 # Stage 3: Final image
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:c319bb4fac67c01ced508b67193a0397e02d37555d8f9b72958649efd302b7f8
+FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:9707cd4542f400df5078df04f9652a272429112f15202d22b5b8bdd148df494f
 
 ENV DEBIAN_FRONTEND=noninteractive
 
