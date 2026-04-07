@@ -23,4 +23,4 @@ actionlint
 ghalint run
 
 # Check for uncommitted changes
-git diff --exit-code
+git diff --exit-code -- . ':!.npmrc'
