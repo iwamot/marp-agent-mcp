@@ -3,6 +3,7 @@ set -e
 
 # mise
 eval "$(mise activate bash)"
+mise fmt
 mise install
 
 # TypeScript
