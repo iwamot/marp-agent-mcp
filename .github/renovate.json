@@ -42,7 +42,8 @@
     },
     {
       "description": "Add release date to PR title if available",
-      "prTitle": "Update {{{depName}}} to {{{newVersion}}}{{#if releaseTimestamp}} ({{{replace 'T.*' '' releaseTimestamp}}}){{/if}}"
+      "matchPackageNames": ["*"],
+      "commitMessageExtra": "{{#if releaseTimestamp}}({{{replace 'T.*' '' releaseTimestamp}}}){{/if}}"
     },
     {
       "description": "Restrict Node.js to LTS versions",
