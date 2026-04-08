@@ -19,29 +19,30 @@
       "customType": "regex",
       "managerFilePatterns": ["/Dockerfile$/"],
       "matchStrings": [
-        "npm install -g @marp-team/marp-cli@(?<currentValue>[^\\s]+)"
+        "npm install -g bun@(?<currentValue>[^\\s]+)"
       ],
-      "depNameTemplate": "@marp-team/marp-cli",
+      "depNameTemplate": "bun",
       "datasourceTemplate": "npm"
     },
     {
       "customType": "regex",
       "managerFilePatterns": ["/Dockerfile$/"],
       "matchStrings": [
-        "npm install -g bun@(?<currentValue>[^\\s]+)"
+        "npm install -g @marp-team/marp-cli@(?<currentValue>[^\\s]+)"
       ],
-      "depNameTemplate": "bun",
+      "depNameTemplate": "@marp-team/marp-cli",
       "datasourceTemplate": "npm"
     }
   ],
   "packageRules": [
     {
-      "description": "Run biome migrate after biome update",
-      "matchPackageNames": ["@biomejs/biome"],
-      "postUpgradeTasks": {
-        "commands": ["pnpm exec biome migrate --write"],
-        "fileFilters": ["biome.json"]
-      }
+      "description": "Disable all grouping",
+      "matchPackageNames": ["*"],
+      "groupName": null
+    },
+    {
+      "description": "Add release date to PR title if available",
+      "prTitle": "Update {{{depName}}} to {{{newVersion}}}{{#if releaseTimestamp}} ({{{replace 'T.*' '' releaseTimestamp}}}){{/if}}"
     },
     {
       "description": "Restrict Node.js to LTS versions",
@@ -50,30 +51,12 @@
       "versioning": "node"
     },
     {
-      "description": "Group mise tools updates",
-      "matchManagers": ["mise"],
-      "groupName": "mise-tools"
-    },
-    {
-      "description": "Group npm dependencies",
-      "matchManagers": ["npm"],
-      "groupName": "npm-dependencies"
-    },
-    {
-      "description": "Group Dockerfile updates",
-      "matchManagers": ["dockerfile"],
-      "groupName": "dockerfile"
-    },
-    {
-      "description": "Group marp-cli and bun with Dockerfile",
-      "matchManagers": ["custom.regex"],
-      "matchPackageNames": ["@marp-team/marp-cli", "bun"],
-      "groupName": "dockerfile"
-    },
-    {
-      "description": "Group GitHub Actions updates",
-      "matchManagers": ["github-actions"],
-      "groupName": "github-actions"
+      "description": "Run biome migrate after biome update",
+      "matchPackageNames": ["@biomejs/biome"],
+      "postUpgradeTasks": {
+        "commands": ["pnpm exec biome migrate --write"],
+        "fileFilters": ["biome.json"]
+      }
     },
     {
       "description": "Disable minimumReleaseAge for digest updates",
