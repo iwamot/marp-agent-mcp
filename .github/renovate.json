@@ -6,6 +6,14 @@
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "minimumReleaseAge": "3 days",
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": null,
+    "automerge": true
+  },
+  "lockFileMaintenance": {
+    "enabled": false
+  },
   "customManagers": [
     {
       "customType": "regex",
@@ -68,13 +76,13 @@
       "groupName": "github-actions"
     },
     {
-      "description": "Disable minimumReleaseAge for digest and lockFileMaintenance",
-      "matchUpdateTypes": ["digest", "lockFileMaintenance"],
+      "description": "Disable minimumReleaseAge for digest updates",
+      "matchUpdateTypes": ["digest"],
       "minimumReleaseAge": null
     },
     {
-      "description": "Automerge minor, patch, digest, and lockFileMaintenance updates",
-      "matchUpdateTypes": ["minor", "patch", "digest", "lockFileMaintenance"],
+      "description": "Automerge minor, patch, and digest updates",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true
     }
   ]
