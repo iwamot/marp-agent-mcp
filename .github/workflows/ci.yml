@@ -25,11 +25,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup Takumi Guard for npm
-        uses: flatt-security/setup-takumi-guard-npm@3c4ad0e8c9e81d0efbccff304adac60e42e3f32d # v1.1.0
-        with:
-          bot-id: BT01KN64BM5NBFHJNSSDYQWKE279
-
       - name: Setup mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
 
