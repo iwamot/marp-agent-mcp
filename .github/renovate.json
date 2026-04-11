@@ -18,6 +18,20 @@
   "customManagers": [
     {
       "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.mise\\.toml$/",
+        "/^\\.github/workflows/ci\\.yml$/"
+      ],
+      "matchStrings": [
+        "min_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"",
+        "jdx/mise-action@[^\\n]*\\n\\s*with:\\s*\\n\\s*version:\\s*(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "jdx/mise",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
       "managerFilePatterns": ["/Dockerfile$/"],
       "matchStrings": [
         "npm install -g bun@(?<currentValue>[^\\s]+)"
