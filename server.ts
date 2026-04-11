@@ -38,20 +38,14 @@ import {
 
 const execFileAsync = promisify(execFile);
 
-// Works both from source (server.ts) and compiled (dist/server.js)
-const DIST_DIR = import.meta.filename.endsWith(".ts")
-  ? path.join(import.meta.dirname, "dist")
-  : import.meta.dirname;
+// Works both from source (server.ts at project root) and compiled (dist/server.js)
+const PROJECT_ROOT = import.meta.filename.endsWith(".ts")
+  ? import.meta.dirname
+  : path.join(import.meta.dirname, "..");
 
-// Path to the skill zip file
-export const SKILL_ZIP_PATH = import.meta.filename.endsWith(".ts")
-  ? path.join(import.meta.dirname, "skill.zip")
-  : path.join(import.meta.dirname, "..", "skill.zip");
-
-// Path to the theme files directory
-const THEMES_DIR = import.meta.filename.endsWith(".ts")
-  ? path.join(import.meta.dirname, "themes")
-  : path.join(import.meta.dirname, "..", "themes");
+const DIST_DIR = path.join(PROJECT_ROOT, "dist");
+export const SKILL_ZIP_PATH = path.join(PROJECT_ROOT, "skill.zip");
+const THEMES_DIR = path.join(PROJECT_ROOT, "themes");
 
 // Re-export validation constants for tests
 export {
