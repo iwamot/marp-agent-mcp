@@ -10,7 +10,7 @@ FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:9707cd4542f40
 WORKDIR /app
 
 # Install pnpm and bun
-RUN corepack enable && corepack use pnpm && npm install -g bun@1.3.11
+RUN corepack enable && corepack use pnpm && npm install -g bun@1.3.12
 
 # Install dependencies
 COPY package.json pnpm-lock.yaml ./
