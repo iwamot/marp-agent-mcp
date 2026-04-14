@@ -47,6 +47,15 @@
       ],
       "depNameTemplate": "@marp-team/marp-cli",
       "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^biome\\.json$/"],
+      "matchStrings": [
+        "https://biomejs\\.dev/schemas/(?<currentValue>[^/]+)/schema\\.json"
+      ],
+      "depNameTemplate": "@biomejs/biome",
+      "datasourceTemplate": "npm"
     }
   ],
   "packageRules": [
@@ -65,14 +74,6 @@
       "matchManagers": ["mise"],
       "matchPackageNames": ["node"],
       "versioning": "node"
-    },
-    {
-      "description": "Run biome migrate after biome update",
-      "matchPackageNames": ["@biomejs/biome"],
-      "postUpgradeTasks": {
-        "commands": ["pnpm exec biome migrate --write"],
-        "fileFilters": ["biome.json"]
-      }
     },
     {
       "description": "Disable automerge for major updates",
