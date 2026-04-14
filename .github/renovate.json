@@ -1,6 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices", "workarounds:typesNodeVersioning", "workarounds:nodeDockerVersioning"],
+  "extends": [
+    "config:best-practices",
+    "customManagers:biomeVersions",
+    "customManagers:dockerfileVersions",
+    "workarounds:nodeDockerVersioning",
+    "workarounds:typesNodeVersioning"
+  ],
   "labels": ["dependencies"],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
@@ -28,33 +34,6 @@
       "depNameTemplate": "jdx/mise",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v?(?<version>.+)$"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/Dockerfile$/"],
-      "matchStrings": [
-        "npm install -g bun@(?<currentValue>[^\\s]+)"
-      ],
-      "depNameTemplate": "bun",
-      "datasourceTemplate": "npm"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/Dockerfile$/"],
-      "matchStrings": [
-        "npm install -g @marp-team/marp-cli@(?<currentValue>[^\\s]+)"
-      ],
-      "depNameTemplate": "@marp-team/marp-cli",
-      "datasourceTemplate": "npm"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/^biome\\.json$/"],
-      "matchStrings": [
-        "https://biomejs\\.dev/schemas/(?<currentValue>[^/]+)/schema\\.json"
-      ],
-      "depNameTemplate": "@biomejs/biome",
-      "datasourceTemplate": "npm"
     }
   ],
   "packageRules": [
