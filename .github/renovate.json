@@ -13,7 +13,7 @@
     ":prConcurrentLimitNone",
     ":prHourlyLimitNone"
   ],
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "1 day",
   "minimumReleaseAgeBehaviour": "timestamp-optional",
   "vulnerabilityAlerts": {
     "enabled": true,
