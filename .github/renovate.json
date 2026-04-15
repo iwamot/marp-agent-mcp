@@ -19,16 +19,6 @@
     "enabled": true,
     "minimumReleaseAge": null
   },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/^\\.mise\\.toml$/"],
-      "matchStrings": ["soft\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
-      "depNameTemplate": "jdx/mise",
-      "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v?(?<version>.+)$"
-    }
-  ],
   "packageRules": [
     {
       "description": "Restrict Node.js to LTS versions",
