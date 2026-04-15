@@ -1,5 +1,5 @@
 # Marp Agent MCP Server
-# Multi-stage build: App build -> Marp CLI -> Final image
+# Multi-stage build: App build -> Marp CLI -> Skill zip -> Final image
 # Uses ECR Public Gallery to avoid Docker Hub rate limits
 
 # ============================================
@@ -36,7 +36,19 @@ ARG MARP_CLI_VERSION=4.3.1
 RUN npm install -g @marp-team/marp-cli@${MARP_CLI_VERSION}
 
 # ============================================
-# Stage 3: Final image
+# Stage 3: Skill zip build
+# ============================================
+FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:9707cd4542f400df5078df04f9652a272429112f15202d22b5b8bdd148df494f AS skill-builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends zip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /skill
+COPY skills/marp-agent-mcp/SKILL.md ./SKILL.md
+RUN zip -q skill.zip SKILL.md
+
+# ============================================
+# Stage 4: Final image
 # ============================================
 FROM public.ecr.aws/docker/library/node:24.14.1-trixie-slim@sha256:9707cd4542f400df5078df04f9652a272429112f15202d22b5b8bdd148df494f
 
@@ -44,12 +56,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /app
 
-# Install Chromium, Japanese fonts, LibreOffice Impress, and zip
+# Install Chromium, Japanese fonts, and LibreOffice Impress
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     fonts-noto-cjk \
     libreoffice-impress \
-    zip \
     && rm -rf /var/lib/apt/lists/* \
     && fc-cache -fv
 
@@ -67,9 +78,8 @@ COPY --from=app-builder /app/dist ./dist
 # Copy theme CSS files
 COPY themes/ ./themes/
 
-# Copy SKILL.md and create zip
-COPY skills/marp-agent-mcp/SKILL.md ./SKILL.md
-RUN zip -q skill.zip SKILL.md
+# Copy skill zip from Stage 3
+COPY --from=skill-builder /skill/skill.zip ./skill.zip
 
 # Expose default port
 EXPOSE 3001
