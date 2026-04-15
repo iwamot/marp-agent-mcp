@@ -46,7 +46,7 @@ docker run -p 3001:3001 marp-agent-mcp
 
 ## 開発環境
 
-ツールバージョンは `.mise.toml` で管理。`mise install` で一括セットアップ。
+ツールバージョンは `mise.toml` で管理。`mise install` で一括セットアップ。
 
 ## コミットルール
 
