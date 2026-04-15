@@ -4,33 +4,26 @@
     "config:best-practices",
     "customManagers:biomeVersions",
     "customManagers:dockerfileVersions",
+    "customManagers:githubActionsVersions",
     "workarounds:nodeDockerVersioning",
-    "workarounds:typesNodeVersioning"
+    "workarounds:typesNodeVersioning",
+    ":automergeAll",
+    ":label(dependencies)",
+    ":maintainLockFilesDisabled",
+    ":prConcurrentLimitNone",
+    ":prHourlyLimitNone"
   ],
-  "labels": ["dependencies"],
-  "prHourlyLimit": 0,
-  "prConcurrentLimit": 0,
   "minimumReleaseAge": "3 days",
-  "automerge": true,
   "minimumReleaseAgeBehaviour": "timestamp-optional",
   "vulnerabilityAlerts": {
     "enabled": true,
     "minimumReleaseAge": null
   },
-  "lockFileMaintenance": {
-    "enabled": false
-  },
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^\\.mise\\.toml$/",
-        "/^\\.github/workflows/ci\\.yml$/"
-      ],
-      "matchStrings": [
-        "min_version\\s*=\\s*\"(?<currentValue>[^\"]+)\"",
-        "jdx/mise-action@[^\\n]*\\n\\s*with:\\s*\\n\\s*version:\\s*(?<currentValue>\\S+)"
-      ],
+      "managerFilePatterns": ["/^\\.mise\\.toml$/"],
+      "matchStrings": ["min_version\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
       "depNameTemplate": "jdx/mise",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v?(?<version>.+)$"
