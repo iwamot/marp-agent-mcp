@@ -9,7 +9,9 @@ mise install
 # TypeScript
 pnpm install --frozen-lockfile
 pnpm licenses ls
-pnpm audit --fix --ignore-unfixable
+# TODO: re-enable once pnpm audit supports npm's bulk advisory endpoint
+# https://github.com/pnpm/pnpm/issues/11265
+# pnpm audit --fix --ignore-unfixable
 pnpm exec biome migrate --write
 pnpm run check:write
 pnpm run typecheck
