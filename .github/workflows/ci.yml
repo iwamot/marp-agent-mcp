@@ -17,6 +17,9 @@ jobs:
     environment: production
     permissions:
       contents: read
+    env:
+      # renovate: datasource=github-releases depName=jdx/mise extractVersion=^v?(?<version>.+)$
+      MISE_VERSION: 2026.4.9
 
     steps:
       - name: Checkout code
@@ -27,7 +30,7 @@ jobs:
       - name: Setup mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
         with:
-          version: 2026.4.9
+          version: ${{ env.MISE_VERSION }}
 
       - name: Run validation script
         run: bash validate.sh
