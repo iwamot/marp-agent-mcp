@@ -23,7 +23,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": ["/^\\.mise\\.toml$/"],
-      "matchStrings": ["min_version\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
+      "matchStrings": ["soft\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
       "depNameTemplate": "jdx/mise",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v?(?<version>.+)$"
