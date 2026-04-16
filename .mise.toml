@@ -12,7 +12,7 @@ node = "24.15.0"
 "aqua:suzuki-shunsuke/pinact" = "3.9.0"
 "aqua:zizmorcore/zizmor" = "1.24.1"
 "npm:@marp-team/marp-cli" = "4.3.1"
-"npm:renovate" = "43.123.0"
+"npm:renovate" = "43.123.1"
 
 [tools."npm:pnpm"]
 version = "11.0.0-rc.1"
