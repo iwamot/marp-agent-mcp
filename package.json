@@ -32,7 +32,7 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.11",
+    "@biomejs/biome": "2.4.12",
     "@marp-team/marp-core": "4.3.0",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
