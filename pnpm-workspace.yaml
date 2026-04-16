@@ -1,5 +1,1 @@
 minimumReleaseAge: 1440
-minimumReleaseAgeExclude:
-  - hono@4.12.14
-overrides:
-  hono@<4.12.14: '>=4.12.14'
