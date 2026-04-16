@@ -2,7 +2,7 @@
   "name": "marp-agent-mcp",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@11.0.0-rc.1",
   "type": "module",
   "description": "Marp slide generation MCP server with preview UI",
   "license": "MIT",

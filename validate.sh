@@ -9,7 +9,7 @@ mise install
 # TypeScript
 pnpm install --frozen-lockfile
 pnpm licenses ls
-pnpm audit --fix --ignore-unfixable --ignore-registry-errors
+pnpm audit --fix override --ignore-unfixable
 pnpm exec biome migrate --write
 pnpm run check:write
 pnpm run typecheck
