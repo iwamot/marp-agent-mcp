@@ -9,10 +9,13 @@
     "workarounds:typesNodeVersioning",
     ":automergeAll",
     ":label(dependencies)",
-    ":maintainLockFilesDisabled",
     ":prConcurrentLimitNone",
     ":prHourlyLimitNone",
     ":semanticCommits"
+  ],
+  "ignorePresets": [
+    "security:minimumReleaseAgeNpm",
+    ":maintainLockFilesWeekly"
   ],
   "minimumReleaseAge": "1 day",
   "minimumReleaseAgeBehaviour": "timestamp-optional",
