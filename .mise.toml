@@ -11,7 +11,7 @@ node = "24.14.1"
 "aqua:suzuki-shunsuke/ghalint" = "1.5.5"
 "aqua:suzuki-shunsuke/pinact" = "3.9.0"
 "aqua:zizmorcore/zizmor" = "1.24.1"
-"npm:renovate" = "43.120.1"
+"npm:renovate" = "43.120.2"
 
 [tools."npm:pnpm"]
 version = "11.0.0-rc.1"
