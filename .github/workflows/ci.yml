@@ -22,8 +22,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Get mise version from .mise.toml
-        run: echo "MISE_VERSION=$(python3 -c "import tomllib; print(tomllib.load(open('.mise.toml','rb'))['min_version'])")" >> "$GITHUB_ENV"
+      - name: Get mise version from mise.toml
+        run: echo "MISE_VERSION=$(python3 -c "import tomllib; print(tomllib.load(open('mise.toml','rb'))['min_version'])")" >> "$GITHUB_ENV"
 
       - name: Setup mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1

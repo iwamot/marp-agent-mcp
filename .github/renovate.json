@@ -1,39 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices",
-    "customManagers:biomeVersions",
-    "customManagers:dockerfileVersions",
-    "customManagers:githubActionsVersions",
-    "workarounds:nodeDockerVersioning",
-    "workarounds:typesNodeVersioning",
-    ":automergeAll",
-    ":label(dependencies)",
-    ":prConcurrentLimitNone",
-    ":prHourlyLimitNone",
-    ":semanticCommits"
-  ],
-  "ignorePresets": [
-    "security:minimumReleaseAgeNpm",
-    ":maintainLockFilesWeekly"
-  ],
-  "minimumReleaseAge": "1 day",
-  "minimumReleaseAgeBehaviour": "timestamp-optional",
-  "vulnerabilityAlerts": {
-    "enabled": true,
-    "minimumReleaseAge": null
-  },
-  "packageRules": [
-    {
-      "description": "Restrict Node.js to LTS versions",
-      "matchManagers": ["mise"],
-      "matchPackageNames": ["node"],
-      "versioning": "node"
-    },
-    {
-      "description": "Disable automerge for major updates",
-      "matchUpdateTypes": ["major"],
-      "automerge": false
-    }
-  ]
+  "extends": ["github>iwamot/renovate-config#v0.9.0"]
 }
