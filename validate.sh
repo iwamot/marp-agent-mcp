@@ -15,14 +15,9 @@ pnpm run check:write
 pnpm run typecheck
 pnpm run test
 
-# Dockerfile
-hadolint Dockerfile
-
-# GitHub Actions
-pinact run
-zizmor --fix .github/workflows/
-actionlint
-ghalint run
+# Shared lint tasks
+mise run gha-lint
+mise run docker-lint
 
 # Check for uncommitted changes
 git diff --exit-code
