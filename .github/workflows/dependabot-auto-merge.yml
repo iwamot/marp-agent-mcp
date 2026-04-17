@@ -7,18 +7,4 @@ permissions:
 
 jobs:
   dependabot:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
-    steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@ffa630c65fa7e0ecfa0625b5ceda64399aea1b36 # v3.0.0
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Enable auto-merge for Dependabot PRs
-        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
-        run: gh pr merge --auto --merge "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    uses: iwamot/workflows/.github/workflows/dependabot-auto-merge.yml@abf3e55832d6cc6312c9375a786b13e4021d7007 # v0.5.0
