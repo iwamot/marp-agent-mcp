@@ -20,36 +20,9 @@ permissions:
 
 jobs:
   renovate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    environment: production
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
-        with:
-          client-id: ${{ secrets.RENOVATE_APP_ID }}
-          private-key: ${{ secrets.RENOVATE_PRIVATE_KEY }}
-          permission-contents: write
-          permission-issues: write
-          permission-pull-requests: write
-          permission-vulnerability-alerts: read
-          permission-workflows: write
-          permission-statuses: write
-          permission-checks: write
-
-      - name: Run Renovate
-        uses: renovatebot/github-action@eb932558ad942cccfd8211cf535f17ff183a9f74 # v46.1.9
-        with:
-          configurationFile: .github/renovate.json
-          token: ${{ steps.app-token.outputs.token }}
-        env:
-          LOG_LEVEL: ${{ inputs.log-level || 'info' }}
-          RENOVATE_REPOSITORIES: ${{ github.repository }}
+    uses: iwamot/workflows/.github/workflows/renovate.yml@abf3e55832d6cc6312c9375a786b13e4021d7007 # v0.5.0
+    with:
+      log-level: ${{ inputs.log-level || 'info' }}
+    secrets:
+      RENOVATE_APP_ID: ${{ secrets.RENOVATE_APP_ID }}
+      RENOVATE_PRIVATE_KEY: ${{ secrets.RENOVATE_PRIVATE_KEY }}
