@@ -11,7 +11,6 @@ permissions:
 env:
   REGISTRY_IMAGE: public.ecr.aws/k7d3h0b5/iwamot/marp-agent-mcp
   AWS_REGION: us-east-1
-  RETAIN_COUNT: "3"
 
 jobs:
   build:
@@ -193,39 +192,3 @@ jobs:
           DIGEST: ${{ needs.merge.outputs.digest }}
         run: |
           cosign attest --yes --predicate sbom.spdx.json --type spdxjson "${REGISTRY_IMAGE}@${DIGEST}"
-
-  retention:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    environment: production
-    permissions:
-      id-token: write
-    needs:
-      - sign
-    steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Delete old images (keep latest N)
-        env:
-          REPOSITORY: iwamot/marp-agent-mcp
-        run: |
-          set -euo pipefail
-          readarray -t digests < <(aws ecr-public describe-images \
-            --repository-name "${REPOSITORY}" \
-            --query "reverse(sort_by(imageDetails,&imagePushedAt))[${RETAIN_COUNT}:].imageDigest" \
-            --output json | jq -r '.[]?')
-          if [ ${#digests[@]} -eq 0 ]; then
-            echo "Nothing to delete"
-            exit 0
-          fi
-          image_ids=()
-          for d in "${digests[@]}"; do
-            image_ids+=("imageDigest=${d}")
-          done
-          aws ecr-public batch-delete-image \
-            --repository-name "${REPOSITORY}" \
-            --image-ids "${image_ids[@]}"
