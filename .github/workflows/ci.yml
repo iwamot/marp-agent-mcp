@@ -10,25 +10,5 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: Run Linting, Type Check, and Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Get mise version from mise.toml
-        run: echo "MISE_VERSION=$(python3 -c "import tomllib; print(tomllib.load(open('mise.toml','rb'))['min_version'])")" >> "$GITHUB_ENV"
-
-      - name: Setup mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-        with:
-          version: ${{ env.MISE_VERSION }}
-
-      - name: Run validation script
-        run: bash validate.sh
+  ci:
+    uses: iwamot/workflows/.github/workflows/ci.yml@ddd824917bcf31b58113e4f8b14421436146bc17 # v0.8.0
