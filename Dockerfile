@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install pnpm and bun
 # renovate: datasource=npm depName=bun
-ARG BUN_VERSION=1.3.12
+ARG BUN_VERSION=1.3.13
 RUN corepack enable && corepack use pnpm && npm install -g bun@${BUN_VERSION}
 
 # Install dependencies
