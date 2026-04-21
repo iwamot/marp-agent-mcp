@@ -7,4 +7,4 @@ permissions:
 
 jobs:
   dependabot-auto-merge:
-    uses: iwamot/workflows/.github/workflows/dependabot-auto-merge.yml@b3d2f10167c0cb280d7307b4cbc3dfff42e11c7b # v0.10.5
+    uses: iwamot/workflows/.github/workflows/dependabot-auto-merge.yml@33f77c21f5d0189c92454aa0b8b2a809549bc598 # v1.0.0
