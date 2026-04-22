@@ -193,8 +193,8 @@ importers:
         specifier: 4.3.0
         version: 4.3.0
       '@modelcontextprotocol/ext-apps':
-        specifier: 1.6.0
-        version: 1.6.0(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(zod@4.3.6)
+        specifier: 1.7.0
+        version: 1.7.0(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(zod@4.3.6)
       '@modelcontextprotocol/sdk':
         specifier: 1.29.0
         version: 1.29.0(zod@4.3.6)
@@ -351,8 +351,8 @@ packages:
     resolution: {integrity: sha512-MflN1movsh8PXJbM9otjJOtlcB0vSrvw5PgXs2PDguVYVzKQmGpiy9QHHKq0rryrgaSp376TdJWBP7mXHHAG8w==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/ext-apps@1.6.0':
-    resolution: {integrity: sha512-j80Hv9kSALu7luR+DtoYERlRaehu6cY2wlHEjG3h36C98bbYzA/nxOEvtGhhKd2ssCwC0BG3+gdh7y3sE5m0tQ==}
+  '@modelcontextprotocol/ext-apps@1.7.0':
+    resolution: {integrity: sha512-gs8rYVx6a8pyCvSpXq7TyVLTERCC94JLrcmJgBs0+3p4jp3iQdJPu1IU+2ovVdFZ1sW8JgmvTkRnxAlIizKINg==}
     engines: {node: '>=20'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.29.0
@@ -481,6 +481,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-rc.16':
     resolution: {integrity: sha512-45+YtqxLYKDWQouLKCrpIZhke+nXxhsw+qAHVzHDVwttyBlHNBVs2K25rDXrZzhpTp9w1FlAlvweV1H++fdZoA==}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
@@ -1387,9 +1390,10 @@ snapshots:
       postcss: 8.5.8
       postcss-nesting: 13.0.2(postcss@8.5.8)
 
-  '@modelcontextprotocol/ext-apps@1.6.0(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(zod@4.3.6)':
+  '@modelcontextprotocol/ext-apps@1.7.0(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(zod@4.3.6)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.3.6)
+      '@standard-schema/spec': 1.1.0
       zod: 4.3.6
 
   '@modelcontextprotocol/sdk@1.29.0(zod@4.3.6)':
@@ -1473,6 +1477,8 @@ snapshots:
     optional: true
 
   '@rolldown/pluginutils@1.0.0-rc.16': {}
+
+  '@standard-schema/spec@1.1.0': {}
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
