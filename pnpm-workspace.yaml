@@ -1,1 +1,5 @@
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@xmldom/xmldom@0.9.10'
+overrides:
+  '@xmldom/xmldom': 0.9.10
