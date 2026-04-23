@@ -52,10 +52,5 @@
   },
   "bin": {
     "marp-agent-mcp": "dist/index.js"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }
