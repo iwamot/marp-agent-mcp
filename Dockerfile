@@ -15,7 +15,7 @@ ARG BUN_VERSION=1.3.13
 RUN corepack enable && corepack use pnpm && npm install -g bun@${BUN_VERSION}
 
 # Install dependencies
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 
 # Copy source code
