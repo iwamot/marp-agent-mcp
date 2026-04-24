@@ -7,13 +7,13 @@ mise fmt
 mise install
 
 # TypeScript
-pnpm install --frozen-lockfile
-pnpm licenses ls
-pnpm audit --fix update --ignore-unfixable
-pnpm exec biome migrate --write
-pnpm run check:write
-pnpm run typecheck
-pnpm run test
+aube install --frozen-lockfile
+aube licenses
+aube audit --fix --ignore-unfixable
+aube exec biome migrate --write
+aube run check:write
+aube run typecheck
+aube run test
 
 # Shared lint tasks
 mise run gha-lint
