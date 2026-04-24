@@ -9,14 +9,16 @@ FROM public.ecr.aws/docker/library/node:24.15.0-trixie-slim@sha256:735dd688da64d
 
 WORKDIR /app
 
-# Install pnpm and bun
+# Install aube and bun
+# renovate: datasource=npm depName=@endevco/aube
+ARG AUBE_VERSION=1.0.0
 # renovate: datasource=npm depName=bun
 ARG BUN_VERSION=1.3.13
-RUN corepack enable && corepack use pnpm && npm install -g bun@${BUN_VERSION}
+RUN npm install -g @endevco/aube@${AUBE_VERSION} bun@${BUN_VERSION}
 
 # Install dependencies
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --prod
+RUN aube install --frozen-lockfile --prod
 
 # Copy source code
 COPY src/ ./src/
@@ -24,7 +26,7 @@ COPY themes/ ./themes/
 COPY constants.ts server.ts main.ts mcp-app.html tsconfig.json tsconfig.server.json vite.config.ts ./
 
 # Build client and server
-RUN pnpm run build
+RUN aube run build
 
 # ============================================
 # Stage 2: Marp CLI build
