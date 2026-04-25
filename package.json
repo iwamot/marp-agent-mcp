@@ -40,7 +40,7 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.12"
+    "@biomejs/biome": "2.4.13"
   },
   "types": "dist/server.d.ts",
   "exports": {
