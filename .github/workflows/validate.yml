@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   validate:
-    uses: iwamot/workflows/.github/workflows/validate.yml@471bb812947616108999accbca3065012b71d221 # v1.1.0
+    uses: iwamot/workflows/.github/workflows/validate.yml@e699662bcd64cc1247041af9160393a07b5bcac5 # v1.2.0
