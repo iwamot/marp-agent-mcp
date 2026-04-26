@@ -54,8 +54,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@xmldom/xmldom": "0.9.10",
-      "postcss": "8.5.10"
+      "@xmldom/xmldom": ">=0.9.10",
+      "postcss": ">=8.5.10"
     }
   }
 }
