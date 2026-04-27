@@ -14,4 +14,4 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: iwamot/workflows/.github/workflows/validate-with-coverage.yml@d718704d344724f106df3152191d71859c0f3715 # v1.3.0
+    uses: iwamot/workflows/.github/workflows/validate-with-coverage.yml@d1fbf4d009ef835741c9801626f014ef90a7dac2 # v1.4.0
