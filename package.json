@@ -20,7 +20,7 @@
     "check": "biome check",
     "check:write": "biome check --write",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit",
-    "test": "bun test"
+    "test": "bun test --coverage --coverage-reporter=lcov --coverage-reporter=text"
   },
   "dependencies": {
     "@marp-team/marp-core": "4.3.0",
