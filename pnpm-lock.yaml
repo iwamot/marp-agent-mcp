@@ -4,10 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@xmldom/xmldom': '>=0.9.10'
-  postcss: '>=8.5.10'
-
 time:
   '@biomejs/biome@2.4.13': 2026-04-23T15:40:57.553Z
   '@biomejs/cli-darwin-arm64@2.4.13': 2026-04-23T15:41:08.668Z
