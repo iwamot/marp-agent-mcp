@@ -5,6 +5,10 @@ dist/
 node_modules/
 .pnpm-debug.log*
 
+# Coverage
+coverage/
+*.lcov
+
 # IDE
 .vscode/
 .idea/
