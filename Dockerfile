@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install aube and bun
 # renovate: datasource=npm depName=@endevco/aube
-ARG AUBE_VERSION=1.2.0
+ARG AUBE_VERSION=1.2.1
 # renovate: datasource=npm depName=bun
 ARG BUN_VERSION=1.3.13
 RUN npm install -g @endevco/aube@${AUBE_VERSION} bun@${BUN_VERSION}
