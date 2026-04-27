@@ -10,7 +10,7 @@ node = "24.15.0"
 "npm:@marp-team/marp-cli" = "4.3.1"
 
 [tools."npm:pnpm-override-prune"]
-version = "0.0.4"
+version = "0.0.5"
 install_before = "0d"
 
 [task_config]
