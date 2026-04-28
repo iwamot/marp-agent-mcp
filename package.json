@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@marp-team/marp-core": "4.3.0",
-    "@modelcontextprotocol/ext-apps": "1.7.0",
+    "@modelcontextprotocol/ext-apps": "1.7.1",
     "@modelcontextprotocol/sdk": "1.29.0",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
