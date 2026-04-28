@@ -22,19 +22,18 @@ import {
   registerAppTool,
 } from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { eastAsianWidth } from "get-east-asian-width";
 import { z } from "zod";
 
 import {
   DEFAULT_THEME,
   MARP_CLI_TIMEOUT_MS,
-  MAX_DISPLAY_WIDTH_PER_LINE,
-  MAX_LINES_PER_SLIDE,
-  MAX_TABLE_ROW_WIDTH,
   THEMES,
   type ThemeId,
   VERSION,
 } from "./constants.js";
+import { formatViolationMessage } from "./src/format.js";
+import { buildMarpArgs, type MarpOutputFormat } from "./src/marp-args.js";
+import { checkSlideOverflow } from "./src/overflow.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -47,17 +46,8 @@ const DIST_DIR = path.join(PROJECT_ROOT, "dist");
 export const SKILL_ZIP_PATH = path.join(PROJECT_ROOT, "skill.zip");
 const THEMES_DIR = path.join(PROJECT_ROOT, "themes");
 
-// Re-export validation constants for tests
-export {
-  MAX_DISPLAY_WIDTH_PER_LINE,
-  MAX_LINES_PER_SLIDE,
-  MAX_TABLE_ROW_WIDTH,
-} from "./constants.js";
-
-// Theme schema
 const ThemeSchema = z.enum(THEMES);
 
-// Name schema (for download filename)
 const NameSchema = z
   .string()
   .regex(
@@ -65,179 +55,23 @@ const NameSchema = z
     "Only lowercase letters, numbers, and hyphens are allowed",
   );
 
-// Resource URI for the MCP App UI
 const resourceUri = "ui://marp-agent/preview.html";
 
-interface LineOverflow {
-  type: "line_overflow";
-  slide_number: number;
-  line_count: number;
-  max_lines: number;
-  excess: number;
-}
-
-interface TableOverflow {
-  type: "table_overflow";
-  slide_number: number;
-  max_width: number;
-  limit: number;
-  excess: number;
-}
-
-type Violation = LineOverflow | TableOverflow;
-
-export function getDisplayWidth(text: string): number {
-  let width = 0;
-  for (const char of text) {
-    const codePoint = char.codePointAt(0);
-    if (codePoint !== undefined) {
-      width += eastAsianWidth(codePoint, { ambiguousAsWide: true });
-    }
+async function resolveThemePath(theme: ThemeId): Promise<string | null> {
+  const themePath = path.join(THEMES_DIR, `${theme}.css`);
+  try {
+    await fs.access(themePath);
+    return themePath;
+  } catch {
+    return null;
   }
-  return width;
-}
-
-export function stripMarkdownFormatting(text: string): string {
-  let result = text;
-  result = result.replace(/\*\*(.+?)\*\*/g, "$1");
-  result = result.replace(/__(.+?)__/g, "$1");
-  result = result.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "$1");
-  result = result.replace(/(?<!_)_(?!_)(.+?)(?<!_)_(?!_)/g, "$1");
-  result = result.replace(/~~(.+?)~~/g, "$1");
-  result = result.replace(/`(.+?)`/g, "$1");
-  result = result.replace(/\[(.+?)\]\(.+?\)/g, "$1");
-  result = result.replace(/^[-*+]\s+/, "");
-  result = result.replace(/^\d+\.\s+/, "");
-  result = result.replace(/^#{1,6}\s+/, "");
-  result = result.replace(/^>\s*/, "");
-  return result;
-}
-
-export function estimateVisualLines(text: string): number {
-  const stripped = text.trim();
-  if (stripped.startsWith("|") && stripped.endsWith("|")) {
-    return 1;
-  }
-  const displayText = stripMarkdownFormatting(stripped);
-  const width = getDisplayWidth(displayText);
-  if (width <= MAX_DISPLAY_WIDTH_PER_LINE) {
-    return 1;
-  }
-  return Math.ceil(width / MAX_DISPLAY_WIDTH_PER_LINE);
-}
-
-export function parseSlides(markdown: string): string[] {
-  // Remove YAML frontmatter (starts with --- and ends with ---)
-  // Using indexOf to avoid ReDoS vulnerability with regex
-  let content = markdown;
-  if (content.startsWith("---")) {
-    const firstNewline = content.indexOf("\n");
-    if (firstNewline !== -1) {
-      const closingIndex = content.indexOf("\n---", firstNewline);
-      if (closingIndex !== -1) {
-        // Find the end of the closing --- line
-        let endIndex = closingIndex + 4; // "\n---".length
-        while (endIndex < content.length && content[endIndex] !== "\n") {
-          // Skip whitespace after ---
-          if (content[endIndex] !== " " && content[endIndex] !== "\t") {
-            break;
-          }
-          endIndex++;
-        }
-        if (
-          endIndex === content.length ||
-          content[endIndex] === "\n" ||
-          content[endIndex] === " " ||
-          content[endIndex] === "\t"
-        ) {
-          content = content.slice(endIndex + 1);
-        }
-      }
-    }
-  }
-  const slides = content.split(/\n---\s*\n/);
-  return slides.map((s) => s.trim()).filter((s) => s.length > 0);
-}
-
-export function countContentLines(slideContent: string): number {
-  const lines = slideContent.split("\n");
-  let count = 0;
-  let inCodeBlock = false;
-
-  for (const line of lines) {
-    const stripped = line.trim();
-    if (stripped.startsWith("```")) {
-      inCodeBlock = !inCodeBlock;
-      continue;
-    }
-    if (!stripped) continue;
-    // Check for single-line HTML comment (stripped is always a single line)
-    if (
-      stripped.startsWith("<!--") &&
-      stripped.endsWith("-->") &&
-      !stripped.slice(4, -3).includes("-->")
-    )
-      continue;
-    if (/^\|[\s\-:|]+\|$/.test(stripped)) continue;
-    count += estimateVisualLines(stripped);
-  }
-  return count;
-}
-
-export function checkTableWidth(slideContent: string): number {
-  let maxWidth = 0;
-  for (const line of slideContent.split("\n")) {
-    const stripped = line.trim();
-    if (!(stripped.startsWith("|") && stripped.endsWith("|"))) continue;
-    if (/^\|[\s\-:|]+\|$/.test(stripped)) continue;
-    const width = getDisplayWidth(stripped);
-    if (width > MAX_TABLE_ROW_WIDTH) {
-      maxWidth = Math.max(maxWidth, width);
-    }
-  }
-  return maxWidth;
-}
-
-export function checkSlideOverflow(markdown: string): Violation[] {
-  const slides = parseSlides(markdown);
-  const violations: Violation[] = [];
-
-  for (let i = 0; i < slides.length; i++) {
-    const slide = slides[i];
-    const slideNumber = i + 1;
-
-    if (/_class:\s*(top|lead|end|tinytext)/.test(slide)) continue;
-
-    const lineCount = countContentLines(slide);
-    if (lineCount > MAX_LINES_PER_SLIDE) {
-      violations.push({
-        type: "line_overflow",
-        slide_number: slideNumber,
-        line_count: lineCount,
-        max_lines: MAX_LINES_PER_SLIDE,
-        excess: lineCount - MAX_LINES_PER_SLIDE,
-      });
-    }
-
-    const tableMaxWidth = checkTableWidth(slide);
-    if (tableMaxWidth > 0) {
-      violations.push({
-        type: "table_overflow",
-        slide_number: slideNumber,
-        max_width: tableMaxWidth,
-        limit: MAX_TABLE_ROW_WIDTH,
-        excess: tableMaxWidth - MAX_TABLE_ROW_WIDTH,
-      });
-    }
-  }
-  return violations;
 }
 
 async function runMarpCli(
   markdown: string,
-  outputFormat: "pdf" | "pptx",
-  theme: ThemeId = DEFAULT_THEME,
-  editable = false,
+  format: MarpOutputFormat,
+  theme: ThemeId,
+  editable: boolean,
 ): Promise<Buffer> {
   const tmpDir = path.join(
     os.tmpdir(),
@@ -247,30 +81,16 @@ async function runMarpCli(
 
   try {
     const mdPath = path.join(tmpDir, "slide.md");
-    const outputPath = path.join(tmpDir, `slide.${outputFormat}`);
+    const outputPath = path.join(tmpDir, `slide.${format}`);
     await fs.writeFile(mdPath, markdown, "utf-8");
 
-    const args = [
+    const args = buildMarpArgs({
       mdPath,
-      "--no-stdin",
-      "--allow-local-files",
-      "-o",
       outputPath,
-    ];
-    if (outputFormat === "pdf") {
-      args.push("--pdf");
-    } else if (outputFormat === "pptx") {
-      args.push("--pptx");
-      if (editable) args.push("--pptx-editable");
-    }
-
-    const themePath = path.join(THEMES_DIR, `${theme}.css`);
-    try {
-      await fs.access(themePath);
-      args.push("--theme", themePath);
-    } catch {
-      // Theme file doesn't exist, use default
-    }
+      format,
+      editable,
+      themePath: await resolveThemePath(theme),
+    });
 
     console.error(`[marp-agent-mcp] Running: marp ${args.join(" ")}`);
     const { stdout, stderr } = await execFileAsync("marp", args, {
@@ -284,27 +104,6 @@ async function runMarpCli(
   } finally {
     await fs.rm(tmpDir, { recursive: true, force: true });
   }
-}
-
-async function generatePdf(
-  markdown: string,
-  theme: ThemeId = DEFAULT_THEME,
-): Promise<Buffer> {
-  return runMarpCli(markdown, "pdf", theme);
-}
-
-async function generatePptx(
-  markdown: string,
-  theme: ThemeId = DEFAULT_THEME,
-): Promise<Buffer> {
-  return runMarpCli(markdown, "pptx", theme);
-}
-
-async function generateEditablePptx(
-  markdown: string,
-  theme: ThemeId = DEFAULT_THEME,
-): Promise<Buffer> {
-  return runMarpCli(markdown, "pptx", theme, true);
 }
 
 async function loadUiHtml(): Promise<string> {
@@ -328,7 +127,6 @@ export function createServer(): McpServer {
     version: VERSION,
   });
 
-  // CSP configuration for the UI resource
   const csp = {
     resourceDomains: [
       "https://fonts.googleapis.com",
@@ -339,7 +137,6 @@ export function createServer(): McpServer {
     connectDomains: ["https://esm.sh"],
   };
 
-  // Register the resource, which returns the bundled HTML/JavaScript for the UI.
   registerAppResource(
     server,
     resourceUri,
@@ -360,9 +157,6 @@ export function createServer(): McpServer {
     },
   );
 
-  // Register a tool with UI metadata. When the host calls this tool, it reads
-  // `_meta.ui.resourceUri` to know which resource to fetch and render as an
-  // interactive UI.
   registerAppTool(
     server,
     "preview_slide",
@@ -413,7 +207,6 @@ Theme changes are reflected immediately on the client side.`,
     },
   );
 
-  // Validation tool
   server.registerTool(
     "validate_slide",
     {
@@ -464,16 +257,10 @@ are within limits. Always validate with this tool after creating or editing slid
         };
       }
 
-      const errorMessages = violations.map((v) =>
-        v.type === "line_overflow"
-          ? `スライド${v.slide_number}: 実質${v.line_count}行（上限${v.max_lines}行、${v.excess}行超過）`
-          : `スライド${v.slide_number}: 表の横幅超過（${v.max_width}文字、上限${v.limit}文字）`,
-      );
-
       const result = {
         valid: false,
         errors: violations,
-        message: `オーバーフローを検出しました。修正してください。\n${errorMessages.join("\n")}`,
+        message: formatViolationMessage(violations),
       };
 
       return {
@@ -483,7 +270,6 @@ are within limits. Always validate with this tool after creating or editing slid
     },
   );
 
-  // PDF export tool
   server.registerTool(
     "export_pdf",
     {
@@ -507,7 +293,12 @@ are within limits. Always validate with this tool after creating or editing slid
       const resolvedTheme = theme ?? DEFAULT_THEME;
       const resolvedName = name ?? "slide";
       try {
-        const pdfBytes = await generatePdf(markdown, resolvedTheme);
+        const pdfBytes = await runMarpCli(
+          markdown,
+          "pdf",
+          resolvedTheme,
+          false,
+        );
         const result = {
           data_base64: pdfBytes.toString("base64"),
           filename: `${resolvedName}.pdf`,
@@ -525,7 +316,6 @@ are within limits. Always validate with this tool after creating or editing slid
     },
   );
 
-  // PPTX export tool
   server.registerTool(
     "export_pptx",
     {
@@ -555,9 +345,12 @@ are within limits. Always validate with this tool after creating or editing slid
       const resolvedTheme = theme ?? DEFAULT_THEME;
       const resolvedName = name ?? "slide";
       try {
-        const pptxBytes = editable
-          ? await generateEditablePptx(markdown, resolvedTheme)
-          : await generatePptx(markdown, resolvedTheme);
+        const pptxBytes = await runMarpCli(
+          markdown,
+          "pptx",
+          resolvedTheme,
+          editable ?? false,
+        );
         const result = {
           data_base64: pptxBytes.toString("base64"),
           filename: `${resolvedName}.pptx`,

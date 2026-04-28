@@ -16,6 +16,7 @@ import {
   type ThemeId,
   VERSION,
 } from "../constants.js";
+import { injectTheme } from "./inject-theme.js";
 import "./global.css";
 import "./mcp-app.css";
 
@@ -115,40 +116,6 @@ for (const theme of THEMES) {
   option.value = theme.id;
   option.textContent = theme.name;
   themeSelect.appendChild(option);
-}
-
-// Inject theme into markdown frontmatter
-function injectTheme(markdown: string, theme: ThemeId): string {
-  // Normalize legacy inline directives
-  const normalized = markdown.replace(
-    /<!-- _backgroundColor: #303030 -->\s*<!-- _color: white -->/g,
-    "<!-- _class: lead -->",
-  );
-
-  const frontMatterMatch = normalized.match(/^---\n([\s\S]*?)\n---/);
-
-  if (frontMatterMatch) {
-    const frontMatter = frontMatterMatch[1];
-    const hasTheme = /^theme:/m.test(frontMatter);
-
-    if (hasTheme) {
-      const newFrontMatter = frontMatter.replace(
-        /^theme:.*$/m,
-        `theme: ${theme}`,
-      );
-      return normalized.replace(
-        frontMatterMatch[0],
-        `---\n${newFrontMatter}\n---`,
-      );
-    } else {
-      return normalized.replace(
-        frontMatterMatch[0],
-        `---\n${frontMatter}\ntheme: ${theme}\n---`,
-      );
-    }
-  } else {
-    return `---\ntheme: ${theme}\n---\n\n${normalized}`;
-  }
 }
 
 function showToast(message: string) {
