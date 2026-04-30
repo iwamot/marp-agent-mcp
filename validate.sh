@@ -9,7 +9,7 @@ mise install
 # TypeScript
 aube install --frozen-lockfile
 aube licenses
-aube audit --fix --ignore-unfixable
+aube audit --fix update --ignore-unfixable
 pnpm-override-prune --fix
 biome migrate --write
 aube run check:write
