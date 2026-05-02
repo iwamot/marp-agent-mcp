@@ -10,7 +10,7 @@ mise install
 aube install --frozen-lockfile
 aube licenses
 aube audit --fix update --ignore-unfixable
-pnpm-override-prune --fix
+aube run prune
 biome migrate --write
 aube run check:write
 aube run typecheck
