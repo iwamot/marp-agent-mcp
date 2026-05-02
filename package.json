@@ -41,6 +41,7 @@
     "zod": "4.4.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.13",
     "@types/bun": "1.3.13",
     "pnpm-override-prune": "0.0.6"
   },
