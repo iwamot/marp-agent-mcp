@@ -9,12 +9,10 @@ FROM public.ecr.aws/docker/library/node:24.15.0-trixie-slim@sha256:735dd688da64d
 
 WORKDIR /app
 
-# Install aube and bun
+# Install aube
 # renovate: datasource=npm depName=@endevco/aube
 ARG AUBE_VERSION=1.5.1
-# renovate: datasource=npm depName=bun
-ARG BUN_VERSION=1.3.13
-RUN npm install -g @endevco/aube@${AUBE_VERSION} bun@${BUN_VERSION}
+RUN npm install -g @endevco/aube@${AUBE_VERSION}
 
 # Install dependencies
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
