@@ -4,10 +4,6 @@ min_version = "2026.4.17"
 install_before = "1d"
 
 [tools]
-# aqua バックエンド (GitHub Releases) で取得。
-# npm だとネイティブ binary tarball (@biomejs/cli-* 約30MB) の fetch が
-# CI で失敗しやすいため。
-biome = "2.4.13"
 bun = "1.3.13"
 node = "24.15.0"
 "npm:@endevco/aube" = "1.5.1"

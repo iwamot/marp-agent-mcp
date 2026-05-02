@@ -11,7 +11,6 @@ aube install --frozen-lockfile
 aube licenses
 aube audit --fix update --ignore-unfixable
 aube run prune
-biome migrate --write
 aube run check:write
 aube run typecheck
 aube run test
