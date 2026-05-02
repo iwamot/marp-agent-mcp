@@ -53,8 +53,5 @@
   },
   "bin": {
     "marp-agent-mcp": "dist/index.js"
-  },
-  "pnpm": {
-    "overrides": {}
   }
 }
