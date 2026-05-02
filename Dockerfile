@@ -10,9 +10,9 @@ FROM public.ecr.aws/docker/library/node:24.15.0-trixie-slim@sha256:735dd688da64d
 WORKDIR /app
 
 # Install aube and bun
-# renovate: datasource=npm depName=@endevco/aube
+# renovate: datasource=npm depName=npm:@endevco/aube packageName=@endevco/aube
 ARG AUBE_VERSION=1.5.1
-# renovate: datasource=npm depName=bun
+# renovate: datasource=github-releases depName=bun packageName=oven-sh/bun versioning=semver-coerced extractVersion=^bun-v(?<version>\S+)
 ARG BUN_VERSION=1.3.13
 RUN npm install -g @endevco/aube@${AUBE_VERSION} bun@${BUN_VERSION}
 
@@ -33,7 +33,7 @@ RUN aube run build
 # ============================================
 FROM public.ecr.aws/docker/library/node:24.15.0-trixie-slim@sha256:735dd688da64d22ebd9dd374b3e7e5a874635668fd2a6ec20ca1f99264294086 AS marp-builder
 
-# renovate: datasource=npm depName=@marp-team/marp-cli
+# renovate: datasource=npm depName=npm:@marp-team/marp-cli packageName=@marp-team/marp-cli
 ARG MARP_CLI_VERSION=4.3.1
 RUN npm install -g @marp-team/marp-cli@${MARP_CLI_VERSION}
 
