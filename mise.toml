@@ -13,5 +13,5 @@ node = "24.15.0"
 
 [task_config]
 includes = [
-  "git::https://github.com/iwamot/mise-tasks.git//.mise/tasks?ref=v1.6.0",
+  "git::https://github.com/iwamot/mise-tasks.git//.mise/tasks?ref=v2.0.0",
 ]
