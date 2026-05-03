@@ -15,11 +15,12 @@ on:
           - info
           - debug
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   renovate:
+    permissions:
+      contents: read
     uses: iwamot/workflows/.github/workflows/renovate.yml@d1fbf4d009ef835741c9801626f014ef90a7dac2 # v1.4.0
     with:
       log-level: ${{ inputs.log-level || 'info' }}
