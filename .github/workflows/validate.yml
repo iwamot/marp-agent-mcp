@@ -6,12 +6,11 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   validate:
     permissions:
       contents: read
-      id-token: write
+      id-token: write  # for Codecov OIDC upload
     uses: iwamot/workflows/.github/workflows/validate-with-coverage.yml@d1fbf4d009ef835741c9801626f014ef90a7dac2 # v1.4.0
