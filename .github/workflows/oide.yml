@@ -1,4 +1,4 @@
-name: oide
+name: Oide
 
 on:
   workflow_dispatch:
@@ -12,6 +12,8 @@ permissions: {}
 jobs:
   pull:
     permissions:
-      contents: write       # to push the branch
-      pull-requests: write  # to open the PR
-    uses: iwamot/workflows/.github/workflows/oide.yml@69e4e95359ec485551da77d06323ecc3d9c956a9 # v2.0.0
+      contents: read
+    uses: iwamot/workflows/.github/workflows/oide.yml@7b3c075718bd3e57a5316384ef1184ab931ef847 # v3.2.0
+    secrets:
+      RENOVATE_APP_ID: ${{ secrets.RENOVATE_APP_ID }}
+      RENOVATE_PRIVATE_KEY: ${{ secrets.RENOVATE_PRIVATE_KEY }}
