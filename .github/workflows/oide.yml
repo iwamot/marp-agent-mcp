@@ -1,0 +1,17 @@
+name: oide
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/oide.yml
+
+permissions: {}
+
+jobs:
+  pull:
+    permissions:
+      contents: write       # to push the branch
+      pull-requests: write  # to open the PR
+    uses: iwamot/workflows/.github/workflows/oide.yml@69e4e95359ec485551da77d06323ecc3d9c956a9 # v2.0.0
