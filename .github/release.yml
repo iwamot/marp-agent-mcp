@@ -6,6 +6,10 @@ changelog:
       exclude:
         labels:
           - dependencies
+          - operations
     - title: 👒 Dependencies
       labels:
         - dependencies
+    - title: 🚜 Operations
+      labels:
+        - operations
