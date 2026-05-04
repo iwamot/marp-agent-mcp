@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   publish:
-    uses: iwamot/workflows/.github/workflows/publish-ecr-public.yml@69e4e95359ec485551da77d06323ecc3d9c956a9 # v2.0.0
+    uses: iwamot/workflows/.github/workflows/publish-ecr-public.yml@7b3c075718bd3e57a5316384ef1184ab931ef847 # v3.2.0
     permissions:
       contents: read
       id-token: write  # to mint OIDC token for AWS role assumption
