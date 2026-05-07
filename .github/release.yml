@@ -2,14 +2,16 @@ changelog:
   categories:
     - title: 🏕 Features
       labels:
-        - '*'
-      exclude:
-        labels:
-          - dependencies
-          - operations
+        - feature
+    - title: 🐛 Bug Fixes
+      labels:
+        - bugfix
     - title: 👒 Dependencies
       labels:
         - dependencies
-    - title: 🚜 Operations
+    - title: 🚜 Maintenance
       labels:
-        - operations
+        - maintenance
+    - title: ❓ Uncategorized
+      labels:
+        - '*'
