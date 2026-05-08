@@ -21,7 +21,7 @@ jobs:
   renovate:
     permissions:
       contents: read
-    uses: iwamot/workflows/.github/workflows/renovate.yml@d5b61426e596ea118fab07cc4c491d9fe72f28fa # v3.3.1
+    uses: iwamot/workflows/.github/workflows/renovate.yml@afdf21101495a5ec5df69338e8f94ed6ee8cf32d # v3.4.0
     with:
       log-level: ${{ inputs.log-level || 'info' }}
     secrets:
