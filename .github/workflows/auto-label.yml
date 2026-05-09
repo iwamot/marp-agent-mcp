@@ -9,4 +9,4 @@ jobs:
   label:
     permissions:
       pull-requests: write  # to add a label to the PR
-    uses: iwamot/workflows/.github/workflows/auto-label.yml@5a1f669fe305576b4e8cbbbfda639745027d3902 # v4.1.0
+    uses: iwamot/workflows/.github/workflows/auto-label.yml@ea195638c4c96f1d94aa7628a233a739e3d068cf # v4.1.1
