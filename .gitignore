@@ -3,36 +3,15 @@ dist/
 
 # Dependencies
 node_modules/
-.pnpm-debug.log*
 
 # Coverage
 coverage/
-*.lcov
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
 
 # Claude Code
 .claude/
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Environment
-.env
-.env.local
-.env.*.local
-
 # Logs
 *.log
-logs/
 
 # Temporary files
 *.tmp
-*.temp
-.cache/
