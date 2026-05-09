@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-draft:
+    name: release-draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    permissions:
+      contents: write  # to create the draft GitHub Release
+    steps:
+      - uses: iwamot/actions/release-draft@08456ce23ea73c42a50d71bd5a067d5ad68dc7e9 # v0.7.0
+
+  publish:
+    needs: release-draft
+    uses: iwamot/workflows/.github/workflows/publish-ecr-public.yml@5a1f669fe305576b4e8cbbbfda639745027d3902 # v4.1.0
+    permissions:
+      contents: read
+      id-token: write  # to mint OIDC token for AWS role assumption
+    with:
+      registry_image: public.ecr.aws/k7d3h0b5/iwamot/marp-agent-mcp
+    secrets:
+      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+
+  release-publish:
+    needs: publish
+    name: release-publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    permissions:
+      contents: write  # to flip the draft GitHub Release to published
+    steps:
+      - uses: iwamot/actions/release-publish@08456ce23ea73c42a50d71bd5a067d5ad68dc7e9 # v0.7.0
