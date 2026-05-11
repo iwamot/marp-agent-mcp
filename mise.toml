@@ -9,7 +9,10 @@ bun = "1.3.13"
 node = "24.15.0"
 "npm:@endevco/aube" = "1.9.1"
 "npm:@marp-team/marp-cli" = "4.4.0"
-"npm:pnpm-override-prune" = "0.0.6"
+
+[tools."npm:pnpm-override-prune"]
+version = "0.0.6"
+install_before = "0d"
 
 [task_config]
 includes = [
