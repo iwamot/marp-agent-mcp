@@ -25,5 +25,5 @@ jobs:
     with:
       log-level: ${{ inputs.log-level || 'info' }}
     secrets:
-      RENOVATE_APP_ID: ${{ secrets.RENOVATE_APP_ID }}
-      RENOVATE_PRIVATE_KEY: ${{ secrets.RENOVATE_PRIVATE_KEY }}
+      RENOVATE_APP_CLIENT_ID: ${{ secrets.RENOVATE_APP_CLIENT_ID }}
+      RENOVATE_APP_PRIVATE_KEY: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
