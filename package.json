@@ -41,7 +41,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@types/bun": "1.3.13"
+    "@types/bun": "1.3.14"
   },
   "types": "dist/server.d.ts",
   "exports": {
