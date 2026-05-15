@@ -13,7 +13,7 @@ jobs:
   pull:
     permissions:
       contents: read
-    uses: iwamot/workflows/.github/workflows/oide.yml@2999ae87b709bd1b1bb9ab110aa3055828848898 # v6.0.0
+    uses: iwamot/workflows/.github/workflows/oide.yml@cdc42cf2f91fd796de35bdc27aaaa1057695afcc # v6.1.0
     with:
       # renovate: datasource=github-tags depName=iwamot/repo-template
       TEMPLATE_VERSION: v1.5.0
