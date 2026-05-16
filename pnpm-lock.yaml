@@ -15,8 +15,8 @@ importers:
         specifier: 4.3.0
         version: 4.3.0
       '@modelcontextprotocol/ext-apps':
-        specifier: 1.7.1
-        version: 1.7.1(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)
+        specifier: 1.7.2
+        version: 1.7.2(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)
       '@modelcontextprotocol/sdk':
         specifier: 1.29.0
         version: 1.29.0(zod@4.4.3)
@@ -116,8 +116,8 @@ packages:
     resolution: {integrity: sha512-MflN1movsh8PXJbM9otjJOtlcB0vSrvw5PgXs2PDguVYVzKQmGpiy9QHHKq0rryrgaSp376TdJWBP7mXHHAG8w==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/ext-apps@1.7.1':
-    resolution: {integrity: sha512-J3WdG1A4JSSKnSWKyU+895dBVYBV2Utgtf7fUsUK45mlkETm53a/1DR6Pm3hUGKqLLQthZLmpxOg8VPzJi/lyg==}
+  '@modelcontextprotocol/ext-apps@1.7.2':
+    resolution: {integrity: sha512-OOWKDxdAjYDcgHkmzVzccyyag3FK+jBWPaWu4WvTxFsU4R/cgOX4eep66zPRA5n4v6WfxUNibPyvX4iJ7egYTg==}
     engines: {node: '>=20'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.29.0
@@ -1124,7 +1124,7 @@ snapshots:
       postcss: 8.5.14
       postcss-nesting: 13.0.2(postcss@8.5.14)
 
-  '@modelcontextprotocol/ext-apps@1.7.1(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)':
+  '@modelcontextprotocol/ext-apps@1.7.2(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
       '@standard-schema/spec': 1.1.0
@@ -1970,7 +1970,6 @@ snapshots:
 
 time:
   '@marp-team/marp-core@4.3.0': 2026-02-28T19:15:13.725Z
-  '@modelcontextprotocol/ext-apps@1.7.1': 2026-04-27T15:20:43.038Z
   '@modelcontextprotocol/sdk@1.29.0': 2026-03-30T16:50:42.718Z
   '@types/cors@2.8.19': 2025-06-07T02:16:26.348Z
   '@types/express@5.0.6': 2025-12-01T20:35:51.488Z
