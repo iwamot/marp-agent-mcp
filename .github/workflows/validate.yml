@@ -14,4 +14,4 @@ jobs:
     permissions:
       contents: read
       id-token: write  # for Codecov OIDC upload
-    uses: iwamot/workflows/.github/workflows/validate-with-coverage.yml@1d30033350f397a683dfdf04708d1a510969e9ed # v8.0.0
+    uses: iwamot/workflows/.github/workflows/validate-with-coverage.yml@52f24a2038979c4c1ec1cb3c3195ef16bb567d2a # v8.0.1
