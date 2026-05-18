@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install aube and bun
 # renovate: datasource=npm depName=npm:@endevco/aube packageName=@endevco/aube
-ARG AUBE_VERSION=1.14.1
+ARG AUBE_VERSION=1.15.0
 # renovate: datasource=github-releases depName=bun packageName=oven-sh/bun versioning=semver-coerced extractVersion=^bun-v(?<version>\S+)
 ARG BUN_VERSION=1.3.14
 RUN npm install -g @endevco/aube@${AUBE_VERSION} bun@${BUN_VERSION}
