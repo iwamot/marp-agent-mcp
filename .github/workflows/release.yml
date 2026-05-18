@@ -9,10 +9,12 @@ permissions: {}
 
 jobs:
   release:
-    uses: iwamot/workflows/.github/workflows/release-ecr-public.yml@7e1e1b73633f829ea0ac1ca934aa4d085561d61a # v7.1.0
+    uses: iwamot/workflows/.github/workflows/release-ecr-public.yml@1d30033350f397a683dfdf04708d1a510969e9ed # v8.0.0
     permissions:
       contents: write  # to draft and publish the GitHub Release
-      id-token: write  # to mint OIDC token for AWS role assumption and cosign signing
+      id-token: write  # to mint OIDC tokens for AWS role assumption, cosign, and attest
+      attestations: write  # to write the provenance attestation
+      artifact-metadata: write  # to record artifact metadata for the attestation
     with:
       registry_image: public.ecr.aws/k7d3h0b5/iwamot/marp-agent-mcp
     secrets:
