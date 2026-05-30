@@ -7,7 +7,7 @@ install_before = "1d"
 biome = "2.4.13"
 bun = "1.3.14"
 node = "24.16.0"
-"npm:@endevco/aube" = { version = "1.16.0", npm_args = "--ignore-scripts=false" }
+"npm:@endevco/aube" = { version = "1.16.1", npm_args = "--ignore-scripts=false" }
 "npm:@marp-team/marp-cli" = "4.4.0"
 
 [tools."npm:pnpm-override-prune"]
