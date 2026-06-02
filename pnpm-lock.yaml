@@ -15,8 +15,8 @@ importers:
         specifier: 4.3.0
         version: 4.3.0
       '@modelcontextprotocol/ext-apps':
-        specifier: 1.7.2
-        version: 1.7.2(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)
+        specifier: 1.7.3
+        version: 1.7.3(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)
       '@modelcontextprotocol/sdk':
         specifier: 1.29.0
         version: 1.29.0(zod@4.4.3)
@@ -116,8 +116,8 @@ packages:
     resolution: {integrity: sha512-MflN1movsh8PXJbM9otjJOtlcB0vSrvw5PgXs2PDguVYVzKQmGpiy9QHHKq0rryrgaSp376TdJWBP7mXHHAG8w==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/ext-apps@1.7.2':
-    resolution: {integrity: sha512-OOWKDxdAjYDcgHkmzVzccyyag3FK+jBWPaWu4WvTxFsU4R/cgOX4eep66zPRA5n4v6WfxUNibPyvX4iJ7egYTg==}
+  '@modelcontextprotocol/ext-apps@1.7.3':
+    resolution: {integrity: sha512-IRBaqDtBZyiwv046FNbyFCIERPT5npu2lDSTCsiRL4se9+s7zcLjRxXlQ7dyD0IZnyS2VjturHftY8GAiDvldA==}
     engines: {node: '>=20'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.29.0
@@ -1105,7 +1105,7 @@ snapshots:
       postcss: 8.5.14
       postcss-nesting: 13.0.2(postcss@8.5.14)
 
-  '@modelcontextprotocol/ext-apps@1.7.2(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)':
+  '@modelcontextprotocol/ext-apps@1.7.3(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
       '@standard-schema/spec': 1.1.0
