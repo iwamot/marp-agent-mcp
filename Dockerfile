@@ -9,12 +9,15 @@ FROM public.ecr.aws/docker/library/node:24.16.0-trixie-slim@sha256:45fbb3ca3b6c7
 
 WORKDIR /app
 
-# Install aube and bun
-# renovate: datasource=npm depName=npm:@endevco/aube packageName=@endevco/aube
-ARG AUBE_VERSION=1.18.1
+# Install aube (distributed via GitHub releases, not npm) and bun
+# renovate: datasource=github-tags depName=aqua:jdx/aube packageName=jdx/aube extractVersion=^v?(?<version>.+)
+ARG AUBE_VERSION=1.19.0
+ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-x86_64-unknown-linux-gnu.tar.gz /tmp/aube.tgz
+RUN tar -xzf /tmp/aube.tgz -C /usr/local/bin aube && rm /tmp/aube.tgz
+
 # renovate: datasource=github-releases depName=bun packageName=oven-sh/bun versioning=semver-coerced extractVersion=^bun-v(?<version>\S+)
 ARG BUN_VERSION=1.3.14
-RUN npm install -g @endevco/aube@${AUBE_VERSION} bun@${BUN_VERSION}
+RUN npm install -g bun@${BUN_VERSION}
 
 # Install dependencies
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
