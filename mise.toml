@@ -10,7 +10,7 @@ AUBE_ALLOWED_UNPOPULAR_PACKAGES = "pnpm-override-prune"
 biome = "2.4.13"
 bun = "1.3.14"
 node = "24.16.0"
-"aqua:jdx/aube" = "1.21.0"
+"aqua:jdx/aube" = "1.22.0"
 "npm:@marp-team/marp-cli" = "4.4.0"
 
 [tools."npm:pnpm-override-prune"]
