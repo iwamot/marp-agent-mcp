@@ -45,11 +45,11 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
       vite:
-        specifier: 8.1.1
-        version: 8.1.1(@types/node@24.13.2)
+        specifier: 8.1.2
+        version: 8.1.2(@types/node@24.13.2)
       vite-plugin-singlefile:
         specifier: 2.3.3
-        version: 2.3.3(vite@8.1.1(@types/node@24.13.2))
+        version: 2.3.3(vite@8.1.2(@types/node@24.13.2))
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -957,8 +957,8 @@ packages:
       rollup:
         optional: true
 
-  vite@8.1.1:
-    resolution: {integrity: sha512-X/05/cT+VITy2AeDc1der6smvGWWREtL4hPbPTaVbjSBuuWkmNOjR6HP3NzqcQA2nF6VHGUPaFRJyft/2AE9Kg==}
+  vite@8.1.2:
+    resolution: {integrity: sha512-6YYPbRXTxx6bRXmOn7XdnQAy5DQNHhDgtjhDHI13oe4pY93kkcdGJWxpGwOm++/Wh0QpQhDrpIoVMrmrsI5AGQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -1873,12 +1873,12 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-plugin-singlefile@2.3.3(vite@8.1.1(@types/node@24.13.2)):
+  vite-plugin-singlefile@2.3.3(vite@8.1.2(@types/node@24.13.2)):
     dependencies:
       micromatch: 4.0.8
-      vite: 8.1.1(@types/node@24.13.2)
+      vite: 8.1.2(@types/node@24.13.2)
 
-  vite@8.1.1(@types/node@24.13.2):
+  vite@8.1.2(@types/node@24.13.2):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
