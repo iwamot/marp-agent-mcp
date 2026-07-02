@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install aube (distributed via GitHub releases, not npm) and bun
 # renovate: datasource=github-tags depName=aqua:jdx/aube packageName=jdx/aube extractVersion=^v?(?<version>.+)
-ARG AUBE_VERSION=1.25.1
+ARG AUBE_VERSION=1.25.2
 ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-x86_64-unknown-linux-gnu.tar.gz /tmp/aube.tgz
 RUN tar -xzf /tmp/aube.tgz -C /usr/local/bin aube && rm /tmp/aube.tgz
 
