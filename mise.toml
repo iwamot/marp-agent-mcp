@@ -1,6 +1,7 @@
-min_version = "2026.6.3"
+min_version = "2026.7.5"
 
 [settings]
+lockfile = true
 npm.package_manager = "aube"
 
 [env]
