@@ -5,7 +5,7 @@
 # ============================================
 # Stage 1: App build (client + server)
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:0b267ba915f3e23c2420204ac28f55c563a1c09ff4fe2c9ad32cc15afd99f5b6 AS app-builder
+FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:ae91dcc111a68c9d2d81ff2a17bda61be126426176fde6fe7d08ab13b7f50573 AS app-builder
 
 WORKDIR /app
 
@@ -34,7 +34,7 @@ RUN aube run build
 # ============================================
 # Stage 2: Marp CLI build
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:0b267ba915f3e23c2420204ac28f55c563a1c09ff4fe2c9ad32cc15afd99f5b6 AS marp-builder
+FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:ae91dcc111a68c9d2d81ff2a17bda61be126426176fde6fe7d08ab13b7f50573 AS marp-builder
 
 # renovate: datasource=npm depName=npm:@marp-team/marp-cli packageName=@marp-team/marp-cli
 ARG MARP_CLI_VERSION=4.4.1
@@ -43,7 +43,7 @@ RUN npm install -g @marp-team/marp-cli@${MARP_CLI_VERSION}
 # ============================================
 # Stage 3: Skill zip build
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:0b267ba915f3e23c2420204ac28f55c563a1c09ff4fe2c9ad32cc15afd99f5b6 AS skill-builder
+FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:ae91dcc111a68c9d2d81ff2a17bda61be126426176fde6fe7d08ab13b7f50573 AS skill-builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends zip \
     && rm -rf /var/lib/apt/lists/*
@@ -55,7 +55,7 @@ RUN zip -q skill.zip SKILL.md
 # ============================================
 # Stage 4: Final image
 # ============================================
-FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:0b267ba915f3e23c2420204ac28f55c563a1c09ff4fe2c9ad32cc15afd99f5b6
+FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:ae91dcc111a68c9d2d81ff2a17bda61be126426176fde6fe7d08ab13b7f50573
 
 ENV DEBIAN_FRONTEND=noninteractive
 
