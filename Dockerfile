@@ -37,7 +37,7 @@ RUN aube run build
 FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:ae91dcc111a68c9d2d81ff2a17bda61be126426176fde6fe7d08ab13b7f50573 AS marp-builder
 
 # renovate: datasource=npm depName=npm:@marp-team/marp-cli packageName=@marp-team/marp-cli
-ARG MARP_CLI_VERSION=4.4.1
+ARG MARP_CLI_VERSION=4.5.0
 RUN npm install -g @marp-team/marp-cli@${MARP_CLI_VERSION}
 
 # ============================================
