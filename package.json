@@ -24,7 +24,7 @@
     "test": "bun test --coverage --coverage-reporter=lcov --coverage-reporter=text"
   },
   "dependencies": {
-    "@marp-team/marp-core": "4.3.1",
+    "@marp-team/marp-core": "4.4.0",
     "@modelcontextprotocol/ext-apps": "1.7.4",
     "@modelcontextprotocol/sdk": "1.29.0",
     "@types/cors": "2.8.19",
