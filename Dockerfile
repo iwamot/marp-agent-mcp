@@ -9,11 +9,15 @@ FROM public.ecr.aws/docker/library/node:24.18.0-trixie-slim@sha256:ae91dcc111a68
 
 WORKDIR /app
 
-# Install aube (distributed via GitHub releases, not npm) and bun
+# Install aube (distributed via GitHub releases, not npm) and bun.
+# aube tarballs are named per architecture and the slim image has no
+# curl/wget, so ADD both and extract the one matching TARGETARCH.
 # renovate: datasource=github-tags depName=aqua:jdx/aube packageName=jdx/aube extractVersion=^v?(?<version>.+)
 ARG AUBE_VERSION=1.29.1
-ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-x86_64-unknown-linux-gnu.tar.gz /tmp/aube.tgz
-RUN tar -xzf /tmp/aube.tgz -C /usr/local/bin aube && rm /tmp/aube.tgz
+ARG TARGETARCH
+ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-x86_64-unknown-linux-gnu.tar.gz /tmp/aube-amd64.tgz
+ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-aarch64-unknown-linux-gnu.tar.gz /tmp/aube-arm64.tgz
+RUN tar -xzf "/tmp/aube-${TARGETARCH}.tgz" -C /usr/local/bin aube && rm /tmp/aube-*.tgz
 
 # renovate: datasource=github-releases depName=bun packageName=oven-sh/bun versioning=semver-coerced extractVersion=^bun-v(?<version>\S+)
 ARG BUN_VERSION=1.3.14
