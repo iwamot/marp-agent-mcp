@@ -1,4 +1,6 @@
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - pnpm-override-prune
-overrides: {}
+overrides:
+  '@hono/node-server': '>=2.0.10'
+  shell-quote: '>=1.9.0'
