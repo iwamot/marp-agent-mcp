@@ -13,7 +13,7 @@ WORKDIR /app
 # aube tarballs are named per architecture and the slim image has no
 # curl/wget, so ADD both and extract the one matching TARGETARCH.
 # renovate: datasource=github-tags depName=aqua:jdx/aube packageName=jdx/aube extractVersion=^v?(?<version>.+)
-ARG AUBE_VERSION=1.35.0
+ARG AUBE_VERSION=1.36.0
 ARG TARGETARCH
 ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-x86_64-unknown-linux-gnu.tar.gz /tmp/aube-amd64.tgz
 ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-aarch64-unknown-linux-gnu.tar.gz /tmp/aube-arm64.tgz
