@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   release:
-    uses: iwamot/workflows/.github/workflows/release-ecr-public.yml@ae85e64823f8d8316a33fa549c7a5ec13ab56795 # v8.6.1
+    uses: iwamot/workflows/.github/workflows/release-ecr-public.yml@1d71352b525cf485394527db3e6a4c4c707b4377 # v8.7.0
     permissions:
       contents: write  # to draft and publish the GitHub Release
       id-token: write  # to mint OIDC tokens for AWS role assumption, cosign, and attest
