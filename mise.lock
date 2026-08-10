@@ -59,73 +59,73 @@ url_api = "https://api.github.com/repos/jdx/aube/releases/assets/505375804"
 provenance = "github-attestations"
 
 [[tools.biome]]
-version = "2.4.13"
+version = "2.5.7"
 backend = "aqua:biomejs/biome"
 
 [tools.biome."platforms.linux-arm64"]
-checksum = "sha256:8aff839821c82ba5ba8455a52d8beacb02229697e781ebaa095f8442fdb6ae51"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-linux-arm64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550474"
+checksum = "sha256:27490d47af66420788b634afb48db23b588f272c8a284ba3daf706a5faa640ab"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-linux-arm64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376677"
 provenance = "github-attestations"
 
 [tools.biome."platforms.linux-arm64-musl"]
-checksum = "sha256:948bbe5fb63d95372d391d42694ce5d553032f66043a178221166da2a76e8614"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-linux-arm64-musl"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550475"
+checksum = "sha256:19f095da173fa6e274db4eaba7cdcff61bde32ad368f754b3185c9eabcd67202"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-linux-arm64-musl"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376675"
 provenance = "github-attestations"
 
 [tools.biome."platforms.linux-x64"]
-checksum = "sha256:f5a3cf9cbe40ba7dd8ecd469567cac00635462589a3acfe97e5d8cab8b866c1c"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-linux-x64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550471"
+checksum = "sha256:7b5045d6d34f055df8ffe1bf3077164e6f6a24c45a41497d628a5e86d0e12fe7"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-linux-x64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376676"
 provenance = "github-attestations"
 
 [tools.biome."platforms.linux-x64-baseline"]
-checksum = "sha256:f5a3cf9cbe40ba7dd8ecd469567cac00635462589a3acfe97e5d8cab8b866c1c"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-linux-x64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550471"
+checksum = "sha256:7b5045d6d34f055df8ffe1bf3077164e6f6a24c45a41497d628a5e86d0e12fe7"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-linux-x64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376676"
 provenance = "github-attestations"
 
 [tools.biome."platforms.linux-x64-musl"]
-checksum = "sha256:a1939a267e2077dadd9134cfa582a2f3ca153f06f882c30d37314fea187667fc"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-linux-x64-musl"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550468"
+checksum = "sha256:4609a493068d7a84c61d01d5ed5ec8cafb805bcc520486be63f0a388bbe3c827"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-linux-x64-musl"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376681"
 provenance = "github-attestations"
 
 [tools.biome."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:a1939a267e2077dadd9134cfa582a2f3ca153f06f882c30d37314fea187667fc"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-linux-x64-musl"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550468"
+checksum = "sha256:4609a493068d7a84c61d01d5ed5ec8cafb805bcc520486be63f0a388bbe3c827"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-linux-x64-musl"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376681"
 provenance = "github-attestations"
 
 [tools.biome."platforms.macos-arm64"]
-checksum = "sha256:22eb03789d405ea84e7b01192a9b5a4885802468dd0f369613837f5b5935178b"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-darwin-arm64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550469"
+checksum = "sha256:f71fe80909d2f70f1e051320f5ba9dfd553bc5ef3bacef5cdee1b00ee96a285c"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-darwin-arm64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376674"
 provenance = "github-attestations"
 
 [tools.biome."platforms.macos-x64"]
-checksum = "sha256:2180d3467d67773daccea90855d8d65e1026ffa429ceba3edcb4553c8664627b"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-darwin-x64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550470"
+checksum = "sha256:887431b79e45758e05d94a89111af72b28e5d6545c92480ecac9247d8bacb321"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-darwin-x64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376680"
 provenance = "github-attestations"
 
 [tools.biome."platforms.macos-x64-baseline"]
-checksum = "sha256:2180d3467d67773daccea90855d8d65e1026ffa429ceba3edcb4553c8664627b"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-darwin-x64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550470"
+checksum = "sha256:887431b79e45758e05d94a89111af72b28e5d6545c92480ecac9247d8bacb321"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-darwin-x64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376680"
 provenance = "github-attestations"
 
 [tools.biome."platforms.windows-x64"]
-checksum = "sha256:bc7d1f26be936aec1423f70ed94fd8c5aa80c3ba199d991dcaf13476daa5f786"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-win32-x64.exe"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550472"
+checksum = "sha256:62adea0ea523f04cc5c074b2bb00e748b97252023aede03196e1bf4aacf80a9c"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-win32-x64.exe"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376679"
 provenance = "github-attestations"
 
 [tools.biome."platforms.windows-x64-baseline"]
-checksum = "sha256:bc7d1f26be936aec1423f70ed94fd8c5aa80c3ba199d991dcaf13476daa5f786"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.4.13/biome-win32-x64.exe"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/403550472"
+checksum = "sha256:62adea0ea523f04cc5c074b2bb00e748b97252023aede03196e1bf4aacf80a9c"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.7/biome-win32-x64.exe"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/501376679"
 provenance = "github-attestations"
 
 [[tools.bun]]
