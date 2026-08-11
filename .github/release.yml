@@ -12,12 +12,15 @@ changelog:
     - title: 🐛 Bug Fixes
       labels:
         - bugfix
-    - title: 👒 Dependencies
+    - title: 📚 Documentation
       labels:
-        - dependencies
+        - documentation
     - title: 🚜 Maintenance
       labels:
         - maintenance
+    - title: 👒 Dependencies
+      labels:
+        - dependencies
     - title: ❓ Uncategorized
       labels:
         - '*'
