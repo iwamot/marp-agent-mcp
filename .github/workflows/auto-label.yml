@@ -1,7 +1,7 @@
 name: 'Auto label by title'
 on:
   pull_request:
-    types: [opened]
+    types: [opened, edited]
     branches: [ "main" ]
 
 permissions: {}
