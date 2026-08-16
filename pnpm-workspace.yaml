@@ -1,5 +1,2 @@
-minimumReleaseAge: 1440
-minimumReleaseAgeExclude:
-  - pnpm-override-prune
 overrides:
   js-yaml: '>=5.2.1'
