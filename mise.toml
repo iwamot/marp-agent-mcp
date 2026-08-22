@@ -8,7 +8,7 @@ npm.package_manager = "aube"
 locked = true
 
 [tools]
-biome = "2.5.9"
+biome = "2.5.10"
 bun = "1.4.0"
 node = "24.19.0"
 "aqua:jdx/aube" = "1.41.0"
