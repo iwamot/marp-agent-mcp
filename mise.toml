@@ -11,7 +11,7 @@ locked = true
 biome = "2.5.10"
 bun = "1.4.0"
 node = "24.19.0"
-"aqua:jdx/aube" = "1.41.0"
+"aqua:jdx/aube" = "2.0.1"
 "npm:@marp-team/marp-cli" = "4.5.0"
 
 [tools."npm:pnpm-override-prune"]
