@@ -10,7 +10,7 @@ locked = true
 [tools]
 biome = "2.5.10"
 bun = "1.4.0"
-node = "24.19.0"
+node = "24.20.0"
 "aqua:jdx/aube" = "2.2.0"
 "npm:@marp-team/marp-cli" = "4.5.0"
 
