@@ -796,6 +796,6 @@ backend = "npm:@marp-team/marp-cli"
 specifiers = ["4.5.0"]
 
 [[tools."npm:pnpm-override-prune"]]
-version = "0.0.8"
+version = "0.0.9"
 backend = "npm:pnpm-override-prune"
-specifiers = ["0.0.8"]
+specifiers = ["0.0.9"]
