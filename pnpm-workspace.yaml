@@ -1,9 +1,6 @@
-# aube writes its own lockfile format when none is present, and Renovate's npm
-# manager does not read it. This keeps a regenerated lockfile on the format
-# that both sides can update.
 defaultLockfileFormat: pnpm
 
 overrides:
   '@xmldom/xmldom': '>=0.9.12'
-  'fast-uri': '>=3.1.6 <4'
+  'fast-uri': '>=3.1.6 <5'
   js-yaml: '>=5.2.1'
