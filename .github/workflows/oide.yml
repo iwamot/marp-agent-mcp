@@ -15,8 +15,9 @@ jobs:
       contents: read
     uses: iwamot/workflows/.github/workflows/oide.yml@3a60350ff82e769fc95271d672a481d135d0c059 # v8.8.4
     with:
-      # renovate: datasource=github-tags depName=iwamot/repo-template
-      TEMPLATE_VERSION: v1.10.0
+      SOURCES: |
+        # renovate: datasource=github-tags depName=iwamot/repo-template
+        iwamot/repo-template@v1.10.0
     secrets:
       OIDE_APP_CLIENT_ID: ${{ secrets.OIDE_APP_CLIENT_ID }}
       OIDE_APP_PRIVATE_KEY: ${{ secrets.OIDE_APP_PRIVATE_KEY }}
