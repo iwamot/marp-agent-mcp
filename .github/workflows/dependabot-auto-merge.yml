@@ -10,4 +10,4 @@ jobs:
     permissions:
       contents: write       # to merge auto-merge PRs
       pull-requests: write  # to enable auto-merge
-    uses: iwamot/workflows/.github/workflows/dependabot-auto-merge.yml@3a60350ff82e769fc95271d672a481d135d0c059 # v8.8.4
+    uses: iwamot/workflows/.github/workflows/dependabot-auto-merge.yml@45ef58fbb304855f7201a3d2c5d8f892934e533e # v8.9.0
