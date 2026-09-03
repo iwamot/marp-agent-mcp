@@ -4,4 +4,6 @@
 defaultLockfileFormat: pnpm
 
 overrides:
+  '@xmldom/xmldom': '>=0.9.12'
+  'fast-uri': '>=3.1.6 <4'
   js-yaml: '>=5.2.1'
