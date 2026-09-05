@@ -20,7 +20,7 @@ ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_
 RUN tar -xzf "/tmp/aube-${TARGETARCH}.tgz" -C /usr/local/bin aube && rm /tmp/aube-*.tgz
 
 # renovate: datasource=github-releases depName=bun packageName=oven-sh/bun versioning=semver-coerced extractVersion=^bun-v(?<version>\S+)
-ARG BUN_VERSION=1.4.0
+ARG BUN_VERSION=1.4.1
 RUN npm install -g bun@${BUN_VERSION}
 
 # Install dependencies
