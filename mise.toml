@@ -12,7 +12,7 @@ biome = "2.5.12"
 bun = "1.4.2"
 node = "24.20.0"
 "aqua:jdx/aube" = "2.2.12"
-"npm:@marp-team/marp-cli" = "4.5.0"
+"npm:@marp-team/marp-cli" = "4.5.1"
 
 [tools."npm:pnpm-override-prune"]
 version = "0.1.0"

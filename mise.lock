@@ -790,9 +790,9 @@ checksum = "sha256:6cac9ffbca8f6a47091e4b5c772e0606049c3871cb67d900c0cedde630e54
 url = "https://nodejs.org/dist/v24.20.0/node-v24.20.0-win-x64.zip"
 
 [[tools."npm:@marp-team/marp-cli"]]
-version = "4.5.0"
+version = "4.5.1"
 backend = "npm:@marp-team/marp-cli"
-specifiers = ["4.5.0"]
+specifiers = ["4.5.1"]
 
 [[tools."npm:pnpm-override-prune"]]
 version = "0.1.0"
