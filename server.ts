@@ -21,7 +21,7 @@ import {
   registerAppResource,
   registerAppTool,
 } from "@modelcontextprotocol/ext-apps/server";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 
 import {
@@ -137,25 +137,19 @@ export function createServer(): McpServer {
     connectDomains: ["https://esm.sh"],
   };
 
-  registerAppResource(
-    server,
-    resourceUri,
-    resourceUri,
-    { mimeType: RESOURCE_MIME_TYPE },
-    async () => {
-      const html = await loadUiHtml();
-      return {
-        contents: [
-          {
-            uri: resourceUri,
-            mimeType: RESOURCE_MIME_TYPE,
-            text: html,
-            _meta: { ui: { csp } },
-          },
-        ],
-      };
-    },
-  );
+  registerAppResource(server, resourceUri, resourceUri, {}, async () => {
+    const html = await loadUiHtml();
+    return {
+      contents: [
+        {
+          uri: resourceUri,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: html,
+          _meta: { ui: { csp } },
+        },
+      ],
+    };
+  });
 
   registerAppTool(
     server,
@@ -166,7 +160,7 @@ export function createServer(): McpServer {
 Parses Marp markdown and displays it in the preview UI.
 Theme selection, page navigation, and download are available in the UI.
 Theme changes are reflected immediately on the client side.`,
-      inputSchema: {
+      inputSchema: z.object({
         markdown: z
           .string()
           .describe("Full Marp markdown text (including frontmatter)"),
@@ -176,7 +170,7 @@ Theme changes are reflected immediately on the client side.`,
         name: NameSchema.optional().describe(
           "Slide name for filename (a-z, 0-9, hyphens only). Defaults to slide",
         ),
-      },
+      }),
       outputSchema: z.object({
         markdown: z.string(),
         theme: z.string(),
@@ -214,11 +208,11 @@ Theme changes are reflected immediately on the client side.`,
 
 Parses Marp markdown and validates that each slide's line count and table width
 are within limits. Always validate with this tool after creating or editing slides.`,
-      inputSchema: {
+      inputSchema: z.object({
         markdown: z
           .string()
           .describe("Full Marp markdown text (including frontmatter)"),
-      },
+      }),
       outputSchema: z.object({
         valid: z.boolean(),
         errors: z.array(
@@ -274,7 +268,7 @@ are within limits. Always validate with this tool after creating or editing slid
     "export_pdf",
     {
       description: "Export slides to PDF format.",
-      inputSchema: {
+      inputSchema: z.object({
         markdown: z.string().describe("Full Marp markdown text"),
         theme: ThemeSchema.optional().describe(
           "Theme name (speee, border, gradient). Defaults to speee",
@@ -282,7 +276,7 @@ are within limits. Always validate with this tool after creating or editing slid
         name: NameSchema.optional().describe(
           "Slide name for filename (a-z, 0-9, hyphens only). Defaults to slide",
         ),
-      },
+      }),
       outputSchema: z.object({
         data_base64: z.string(),
         filename: z.string(),
@@ -320,7 +314,7 @@ are within limits. Always validate with this tool after creating or editing slid
     "export_pptx",
     {
       description: "Export slides to PPTX format.",
-      inputSchema: {
+      inputSchema: z.object({
         markdown: z.string().describe("Full Marp markdown text"),
         theme: ThemeSchema.optional().describe(
           "Theme name (speee, border, gradient). Defaults to speee",
@@ -334,7 +328,7 @@ are within limits. Always validate with this tool after creating or editing slid
           .describe(
             "Output in editable format (experimental, LibreOffice compatible)",
           ),
-      },
+      }),
       outputSchema: z.object({
         data_base64: z.string(),
         filename: z.string(),
