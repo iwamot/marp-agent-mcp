@@ -2,6 +2,7 @@
  * @file MCP App for Marp slide preview with theme switching and export functionality.
  */
 import Marp from "@marp-team/marp-core";
+import type { CallToolResult } from "@modelcontextprotocol/client";
 import {
   App,
   applyDocumentTheme,
@@ -9,7 +10,6 @@ import {
   applyHostStyleVariables,
   type McpUiHostContext,
 } from "@modelcontextprotocol/ext-apps";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import {
   DEFAULT_THEME,
   SERVER_TOOL_TIMEOUT_MS,
