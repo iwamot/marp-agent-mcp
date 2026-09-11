@@ -1,4 +1,4 @@
-min_version = "2026.8.14"
+min_version = "2026.9.5"
 
 [settings]
 lockfile = true
