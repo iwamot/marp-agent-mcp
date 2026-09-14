@@ -22,6 +22,11 @@ export async function startStreamableHTTPServer(
 ): Promise<void> {
   const port = parseInt(process.env.PORT ?? "3001", 10);
 
+  // The zip is baked into the image, so read it once instead of on every request
+  const skillZip = existsSync(SKILL_ZIP_PATH)
+    ? readFileSync(SKILL_ZIP_PATH)
+    : undefined;
+
   const app = express();
   app.use(express.json());
   app.use(cors());
@@ -33,11 +38,10 @@ export async function startStreamableHTTPServer(
 
   // Skill zip download endpoint
   app.get("/skill.zip", (_req: Request, res: Response) => {
-    if (existsSync(SKILL_ZIP_PATH)) {
-      const content = readFileSync(SKILL_ZIP_PATH);
+    if (skillZip) {
       res.setHeader("Content-Type", "application/zip");
       res.setHeader("Content-Disposition", "attachment; filename=skill.zip");
-      res.send(content);
+      res.send(skillZip);
     } else {
       res.status(404).send("skill.zip not found");
     }
