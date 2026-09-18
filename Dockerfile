@@ -19,6 +19,7 @@ ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_
 ADD https://github.com/jdx/aube/releases/download/v${AUBE_VERSION}/aube-v${AUBE_VERSION}-aarch64-unknown-linux-gnu.tar.gz /tmp/aube-arm64.tgz
 RUN tar -xzf "/tmp/aube-${TARGETARCH}.tgz" -C /usr/local/bin aube && rm /tmp/aube-*.tgz
 
+# Runs its scripts: bun's postinstall is what fetches the binary.
 # renovate: datasource=github-releases depName=bun packageName=oven-sh/bun versioning=semver-coerced extractVersion=^bun-v(?<version>\S+)
 ARG BUN_VERSION=1.4.2
 RUN npm install -g bun@${BUN_VERSION}
@@ -40,9 +41,11 @@ RUN aube run build
 # ============================================
 FROM public.ecr.aws/docker/library/node:24.21.0-trixie-slim@sha256:d7b4e5c4ad20b327d7bb16fab6aecd60ac20aa50f8514eb75a2b059e89abe48e AS marp-builder
 
+# No package in the tree needs an install script, so they are skipped: one
+# added upstream would otherwise run at build time.
 # renovate: datasource=npm depName=npm:@marp-team/marp-cli packageName=@marp-team/marp-cli
 ARG MARP_CLI_VERSION=4.5.1
-RUN npm install -g @marp-team/marp-cli@${MARP_CLI_VERSION}
+RUN npm install -g --ignore-scripts @marp-team/marp-cli@${MARP_CLI_VERSION}
 
 # ============================================
 # Stage 3: Skill zip build
