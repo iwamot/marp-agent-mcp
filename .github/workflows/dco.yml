@@ -9,4 +9,4 @@ jobs:
   dco:
     permissions:
       pull-requests: read  # to read PR commits for DCO sign-off check
-    uses: iwamot/workflows/.github/workflows/dco.yml@03b94c328c99fb628465841debd7ba83ca9b517f # v8.10.1
+    uses: iwamot/workflows/.github/workflows/dco.yml@866cf6089ddb88af6b479a14a4a78910b472b5f6 # v8.11.0
