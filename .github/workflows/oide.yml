@@ -17,7 +17,7 @@ jobs:
     with:
       SOURCES: |
         # renovate: datasource=github-tags depName=iwamot/repo-template
-        iwamot/repo-template@v1.10.0
+        iwamot/repo-template@v1.10.1
     secrets:
       OIDE_APP_CLIENT_ID: ${{ secrets.OIDE_APP_CLIENT_ID }}
       OIDE_APP_PRIVATE_KEY: ${{ secrets.OIDE_APP_PRIVATE_KEY }}
