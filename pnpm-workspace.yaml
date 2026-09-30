@@ -4,3 +4,4 @@ overrides:
   '@xmldom/xmldom': '>=0.9.12'
   'fast-uri': '>=3.1.6 <5'
   js-yaml: '>=5.2.1'
+  markdown-it: '>=14.3.1 <15'
