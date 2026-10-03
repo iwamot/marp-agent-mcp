@@ -21,11 +21,11 @@ importers:
         specifier: 2.3.0
         version: 2.3.0
       '@modelcontextprotocol/core':
-        specifier: 2.2.0
-        version: 2.2.0
+        specifier: 2.3.0
+        version: 2.3.0
       '@modelcontextprotocol/ext-apps':
         specifier: 2.0.3
-        version: 2.0.3(@modelcontextprotocol/client@2.3.0)(@modelcontextprotocol/core@2.2.0)(@modelcontextprotocol/server@2.2.0)(zod@4.6.5)
+        version: 2.0.3(@modelcontextprotocol/client@2.3.0)(@modelcontextprotocol/core@2.3.0)(@modelcontextprotocol/server@2.2.0)(zod@4.6.5)
       '@modelcontextprotocol/node':
         specifier: 2.1.1
         version: 2.1.1(@modelcontextprotocol/server@2.2.0)
@@ -1200,10 +1200,10 @@ snapshots:
     dependencies:
       zod: 4.6.5
 
-  '@modelcontextprotocol/ext-apps@2.0.3(@modelcontextprotocol/client@2.3.0)(@modelcontextprotocol/core@2.2.0)(@modelcontextprotocol/server@2.2.0)(zod@4.6.5)':
+  '@modelcontextprotocol/ext-apps@2.0.3(@modelcontextprotocol/client@2.3.0)(@modelcontextprotocol/core@2.3.0)(@modelcontextprotocol/server@2.2.0)(zod@4.6.5)':
     dependencies:
       '@modelcontextprotocol/client': 2.3.0
-      '@modelcontextprotocol/core': 2.2.0
+      '@modelcontextprotocol/core': 2.3.0
       '@standard-schema/spec': 1.1.0
       zod: 4.6.5
     optionalDependencies:
