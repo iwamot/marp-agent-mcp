@@ -1,5 +1,8 @@
 # パワポ作るマンを実験的にMCP Apps化したやつ
 
+> [!NOTE]
+> このリポジトリはアーカイブ済みです。リモートMCPサーバー（`https://pawapo.iwamot.com/mcp`）の提供は終了しました。機能追加や依存の更新は行いません。
+
 みのるんさんの[パワポ作るマン](https://github.com/minorun365/marp-agent)をMCP Apps化した実験的プロジェクトです。
 
 Claude Desktop AppとClaude.aiで動作確認済み。
